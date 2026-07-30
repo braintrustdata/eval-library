@@ -1,16 +1,25 @@
 ---
 name: bt-analyze-eval-results
 description: >
-  Analyze eval results beyond averages and turn them into a defensible
-  ship / no-ship decision — confidence intervals, run-to-run variance and
-  reliability, subgroup breakdowns, paired comparisons, multiple-comparison
-  discipline, benchmark fragility, and a stats-grounded release gate. Use after
-  running an experiment designed with bt-eval-experiment-design.
+  Take eval results straight to a defensible ship / no-ship decision in one pass —
+  confidence intervals, run-to-run variance and reliability, subgroup breakdowns,
+  paired comparisons, multiple-comparison discipline, benchmark fragility, and a
+  stats-grounded release gate. Use for a fast, self-contained decision on a single
+  completed experiment where the arms differ in one respect. Not for a
+  stage-by-stage treatment with run-integrity auditing, clustered standard errors,
+  or a gate policy as its own reviewed artifact.
 ---
 
 # Analyze Eval Results
 
 An eval score is an **estimate of a random variable**, not a fixed truth. The same agent behaves differently across runs, inputs, and conditions, so a bare "85%" is meaningless without its spread and the conditions behind it. This skill takes raw experiment output and produces a decision that accounts for uncertainty.
+
+## When to use / when this is the wrong altitude
+
+- **Use this** for the fast path: one completed experiment, one decision, six steps, done.
+- **Not this** when the numbers must survive outside scrutiny. A rigorous pass adds a run-integrity audit — effective n as attempted / completed / errored, reconciled *before* any average is read — plus clustered standard errors on related items and explicit exploratory-vs-confirmatory labelling. None of that is below.
+- **Not this** when the gate itself is the deliverable: a per-row policy with named owners, thresholds sourced to product tolerances rather than to current numbers, and a distinct reading for each kind of failure. Step 6 gives you a checklist, not a policy.
+- **Not this** when several things changed at once. Step 4 assumes arms differ in one respect; if a migration bundled model, serving path, and tools, isolate the factors first or the attribution is invented.
 
 ## Step 1: Confidence intervals on every headline metric
 
@@ -52,7 +61,7 @@ If a subgroup regresses severely, that can block the ship even when the average 
 
 ## Step 4: Paired comparison
 
-If both arms ran on the **same items** (paired design — see bt-eval-experiment-design), don't just compare the two averages. Analyze **task-by-task differences**, which removes between-item variance and reveals whether B is *consistently* better or just better on average because of a few items.
+If both arms ran on the **same items** (a paired design, fixed before the run), don't just compare the two averages. Analyze **task-by-task differences**, which removes between-item variance and reveals whether B is *consistently* better or just better on average because of a few items.
 
 ```python
 import numpy as np
@@ -76,9 +85,9 @@ If you compared many arms, the winner may be lucky (with 20 arms, ~64% chance of
 
 Combine everything into an explicit ship / no-ship decision. Ship only if **all** hold:
 
-- [ ] Primary metric improves by at least the **MDE** (from bt-eval-hypothesis).
+- [ ] Primary metric improves by at least the **MDE** (fixed in the experiment design, before the run).
 - [ ] The **CI on the improvement excludes 0** (ideally excludes the MDE) — the gain isn't noise.
-- [ ] Every **guardrail within bounds** (from bt-multi-objective-eval), with its own CI on the right side of the threshold.
+- [ ] Every **guardrail within bounds**, with its own CI on the right side of the threshold.
 - [ ] **No severe subgroup regression.**
 - [ ] If selected from many arms, the result **survived multiplicity correction or a confirmatory run.**
 

@@ -20,8 +20,8 @@ ask, propose, get approval, then spend money.
 - **Use this** to design and run a new eval or model/prompt comparison.
 - **Getting data into Braintrust** (mapping a HuggingFace / CSV / trace source into
   a BT dataset)? Handled in Phase 3 via `references/dataset-import.md`.
-- **Pulling or plotting results** from experiments that already ran? Hand off to
-  the **`braintrust-analyze`** skill.
+- **Pulling or plotting results** from experiments that already ran? Out of scope here —
+  that is analysis, not eval design.
 
 Work through the phases in order. Do not skip the approval gates — the whole point
 is that the user signs off on the dataset and the scorers before a paid run.
@@ -253,8 +253,8 @@ it, because a first implementation is usually not fully correct.
    real model difference.
 
 ## Phase 7 — Hand off to deeper analysis
-For plots and heavier slicing, point the user to the **`braintrust-analyze`** skill
-(BTQL, cached pulls, Braintrust-styled charts) — it continues the running log below.
+For plots and heavier slicing, hand off to analysis (BTQL, cached pulls, Braintrust-styled
+charts) — it continues the running log below.
 
 **Turning the log into a blog?** That's a separate step, and not everyone wants
 it — hand off to the **`braintrust-eval-blog`** skill, which owns the
@@ -291,7 +291,7 @@ more conventional markup" is an assertion; a side-by-side of the two outputs'
 `<body>` openings from the same row is evidence. If no example can be found,
 the claim doesn't go in.
 surprising results, confounds you found, decisions and why. Skip routine steps and
-raw dumps. `braintrust-analyze` continues this same file with the deeper analysis.
+raw dumps. Deeper analysis continues this same file.
 
 ---
 

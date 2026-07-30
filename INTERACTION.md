@@ -1,0 +1,78 @@
+# Shared interaction contract
+
+Every card in this suite inherits this file. It is the part that would otherwise be
+repeated 23 times. Cards reference it rather than restating it.
+
+## 1. Inspect before asking
+
+If the user supplies an artifact — behavior spec, trace, dataset, scorer,
+experiment, report, repo — read it first. Never ask for something already present in
+it. Most eval questions are answerable from the artifact plus the request.
+
+## 2. Start from the smallest sufficient input
+
+Accept incomplete input. Any of these is enough to begin: a product or agent
+description, a behavior to evaluate, a production failure or trace, an existing
+dataset/schema/scorer/report, or a decision such as "ship this model update."
+
+## 3. Ask one high-information question at a time
+
+Ask only when the missing answer would materially change the artifact. Prefer
+questions about the decision, the target population, the unacceptable failure, or
+the available evidence. Never open with an intake questionnaire.
+
+## 4. Produce a draft early, and label its uncertainty
+
+When reasonable assumptions are safe, state them and produce a first artifact. Mark
+every claim in the output with one of:
+
+- `Confirmed` — read directly from a supplied artifact or explicitly stated.
+- `Assumed` — a safe default, stated so it can be overridden.
+- `Needs decision` — requires a human choice (a threshold, a tolerance, a priority).
+- `Not yet measurable` — no evidence currently exists to support this.
+
+## 5. Support four modes; do not slide between them
+
+Every artifact card recognizes four verbs:
+
+| Mode | Meaning |
+| --- | --- |
+| **Create** | Build the artifact from requirements or examples. |
+| **Audit** | Identify gaps, ambiguity, bias, unsupported claims. Report only. |
+| **Repair** | Revise an existing artifact. |
+| **Compare** | Explain meaningful differences between two artifacts. |
+
+**Audit never becomes repair without being asked.** Report what is wrong, then stop.
+Sliding from audit into repair hides what was wrong, and the user loses the chance to
+disagree with the diagnosis.
+
+## 6. End with the next decision
+
+Close with: the artifact, the assumptions worth challenging, the unresolved
+decisions, and the one skill that consumes this output next. Do not march the user
+through the whole lifecycle.
+
+## 7. Constants policy
+
+Numeric thresholds live in each skill's `reference.md`, not in the card. The card
+carries the procedure; the reference carries the calibration, its hedge, and its
+provenance.
+
+The one exception: a number that **is** the method rather than a tunable default
+stays in the card — the rule of three, K ≥ 3 runs, "≥ 2 raters." Everything else
+(κ floors, item counts, agreement bars, gate thresholds) is a default to justify,
+never a law to apply. When quoting any of them, quote the hedge with the number.
+
+## 8. Provenance policy
+
+Every empirical claim in a `reference.md` carries its source and a verification
+status:
+
+- `[guide §N]` — traceable to a section of the evals best-practices guide.
+- `[guide §N → source]` — the guide is paraphrasing; the named source is the
+  authority, and the paraphrase has drifted at least once before.
+- `[pending]` — the claim exists only in a guide comment block, not yet in published
+  prose. Re-check before repeating it externally.
+
+Cards inherit drift from the guide. When a card's claim and the guide's prose
+disagree, the guide wins and the card is stale.
