@@ -9,3 +9,7 @@ A library of Claude Code skills for running and analyzing evals in Braintrust.
 - **[braintrust-graph-styles](braintrust-graph-styles/)** — Apply Braintrust brand colors, typography, and styling to matplotlib/seaborn graphs when generating, restyling, or auditing data visualizations.
 
 Each skill is a directory containing a `SKILL.md` (and any supporting `references/` or `scripts/`). Drop a skill directory into `~/.claude/skills/` to use it.
+
+## Examples
+
+- **[rag-only-enforcement](rag-only-enforcement/)** — A runnable end-to-end eval (not a skill): does behavior-based scoring catch what `test_passed` misses when a coding agent is given a "locate code via vector search only" rule? Four enforcement variants over SWE-bench Django tasks, with output and behavior scorers side by side.
