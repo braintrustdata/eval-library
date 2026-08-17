@@ -115,6 +115,25 @@ badly. `[guide §4.2]`
 
 `[guide §4.7 → Gebru et al. 2021; Kiela et al. 2021; Reuel et al. 2024]`
 
+## Iteration budget
+
+"Touch test rarely" is not enforceable as written. The operational form, defaults to justify:
+
+- **≤ 5 experiments** against the dev slice before stopping to reflect and report.
+- **One hypothesis and one coherent change** per experiment. Two changes at once means the next
+  result attributes to neither.
+- **The same dev slice** throughout. Rotating the slice when results disappoint is test-touching
+  with extra steps.
+- **One test touch**, by the winning candidate, after iteration has stopped.
+
+Set the budget before the first run. Set afterwards, it describes what happened rather than
+constraining it — and the number chosen will be however many runs it took.
+
+The regime this protects against is specific and easy to fall into: a small validation set, a
+candidate cheap enough to rerun freely, and "the outputs look better now" available as a stopping
+rule at every step. Under those three conditions, iteration converges on the slice rather than the
+construct, and nothing in the numbers reveals it.
+
 ## Diagnostics
 
 - **Difficulty spread:** per-item confidence and variability across runs/models reveals

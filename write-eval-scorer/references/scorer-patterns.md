@@ -1,5 +1,9 @@
 # Reference — scorers
 
+Platform mechanics carry `[platform]` rather than a guide section. They are product behavior, not
+empirical claims — but they go stale the same way, so re-check them against the shipped tool
+surface before relying on one externally.
+
 ## Choosing the method
 
 | Evidence | Method |
@@ -47,6 +51,45 @@ Output JSON: {"score": <n>, "evidence": "<the span or quote that decided it>",
 Anchored exemplar pairs elicited from domain experts are the correct source for these
 examples — do not invent them.
 
+## Emit classes, map to numbers
+
+Do not ask a model for a number. Asked for a score in 0–1 it clusters on round values, and the
+distance between 0.6 and 0.8 carries no stable meaning across items or across runs. Asked for a
+**label from described categories** it is doing the thing it is actually good at. Have the model
+return the class; configure the class→score mapping outside it.
+
+```text
+Classes, and the score each maps to:
+  consistent          1.0
+  minor_omission      0.7
+  lacking_citation    0.4
+  contradicted        0.0
+```
+
+This is the same move the rubric pattern already makes — the class *is* the anchor — carried
+through to the output rather than dropped at the last step. Three things follow from it:
+
+- The mapping becomes a reviewable, versionable artifact, separate from the prompt.
+- Re-weighting severity no longer requires re-running the judge.
+- Disagreements become adjudicable. "The judge called this `lacking_citation`" is a claim a human
+  can argue with; "the judge said 0.4" is not.
+
+`[platform]` mapping mechanics: LLM score evaluators configure this as `choice_scores`.
+
+## Scorer or classifier
+
+| | Scorer | Classifier |
+| --- | --- | --- |
+| Returns | number in 0–1 | one label from a fixed set |
+| Needs | numeric mapping, skip behavior | allowed labels, no-match behavior |
+
+Pick classifier when the answer is genuinely categorical and the categories are known and stable.
+Flattening categories onto a 0–1 scale so the instrument "matches the other scorers" discards the
+distinction the instrument was built to capture — and an ordering imposed on unordered categories
+is an assertion about severity that nobody reviewed.
+
+If the categories are not known yet, this is discovery, not scoring: see `discover-trace-topics`.
+
 ## Bias and silent-error rules
 
 - **Judge ≠ evaluated model family.** LLM judges systematically prefer their own
@@ -75,6 +118,12 @@ examples — do not invent them.
   `[guide §5.4]`
 - **Version scorers like code.** A scorer change invalidates cross-experiment
   comparisons exactly like a dataset change. `[guide §5.4]`
+- **The judged text can address the judge.** Output produced by the system under test may contain
+  content directed at the evaluator — a claim that the answer is complete, an instruction about how
+  to score it. The four documented biases all describe a *miscalibrated* judge; none of them
+  describes one that is being spoken to, and counterbalancing does nothing about it. Include a
+  probe for it in the test matrix, and read the judge's evidence field rather than only its score.
+  Contract §9.
 
 ## Mitigation beyond order-swapping
 
@@ -96,6 +145,7 @@ timeout:            # no output
 parse_failure:      # unparseable output
 empty_output:
 adversarial:        # gaming attempt — length, confidence, polish
+addressed_judge:    # output containing text aimed at the evaluator
 ```
 
 ## Scorer contract template
@@ -104,10 +154,13 @@ adversarial:        # gaming attempt — length, confidence, polish
 scorer: <name>              # stable across experiments
 version: <n>
 criterion: <one dimension>
-level: trace | group | both
+output_type: score | classification
+input_scope: span | trace | group          # how much one call sees; default trace
+reporting_level: per_item | aggregate | both
 method: deterministic | reference_match | state_check | rubric_judge | pairwise
 evidence_required: <fields or spans it reads>
-range: 0-1
+range: 0-1                  # score only
+classes: <label: score, ...>               # rubric judges: emit the label, map here
 judge_model: <family, must differ from system under test>
 failure_handling:
   system_failure: score_0 | score_partial

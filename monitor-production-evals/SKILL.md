@@ -26,6 +26,9 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
    Online has perfect distributional realism and **no controlled comparison**.
 2. Define coverage deliberately — which traffic, at what rate, which scorers. **Stratify** so
    rare-but-severe slices are covered; proportional sampling misses the failures that matter most.
+   The sampling rate is simultaneously the coverage decision and the **cost** decision, and the
+   two pull opposite ways; decide it as one tradeoff rather than setting coverage and discovering
+   the bill.
 3. Reuse offline scorers where they were validated for monitoring, and state which use each is
    approved for. A scorer below the gating bar may still serve trend monitoring.
 4. Give every alert a threshold with **documented provenance**, an **owner**, and an **action**. An
@@ -50,8 +53,10 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Check
 
-- Sampling plan states rate, stratification, and coverage of rare severe slices.
+- Sampling plan states rate, stratification, coverage of rare severe slices, and cost at that rate.
 - Every online scorer's approved use documented, with its validation date.
+- Any historical backfill has its window, eligible-unit count, and estimated cost stated before it
+  is submitted.
 - Every alert has threshold provenance, owner, action, and review latency.
 - Drift monitored on both input distribution and scorer behavior.
 - Ingestion path from flagged trace to versioned dataset item exists, with an owner.
@@ -79,6 +84,14 @@ each scorer's approved use in its description so nobody promotes a trend scorer 
 Close the loop with **human review queues**: sample live traces → review → append to a **versioned**
 golden dataset, with provenance in metadata (`trace_id`, incident ref, date, reviewer,
 `source: production-<YYYY-MM>`). Route the scorer-disagreement queue in too.
+
+Standing a scorer up on live traffic — rule configuration, sampling, activation, and historical
+backfill — is `deploy-braintrust-evaluator`. Two things from it bear directly on monitoring
+design. **Activating a rule for new traffic and rewinding it over history are separate actions
+requiring separate authorization**, and a paused rule accepts a rewind without processing it, which
+is how teams end up believing history is being scored when nothing is running. And a backfill's
+cost is eligible units × sampling rate × per-call judge cost, which on a high-volume project is
+easy to misjudge by an order of magnitude — estimate before submitting, and submit once.
 
 Record each alert's baseline window in its own description, so a quiet alert is distinguishable
 from a moved population. Detect judge drift by re-running the **calibration experiment** on a

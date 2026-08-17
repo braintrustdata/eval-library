@@ -42,6 +42,7 @@ Narrow, composable artifact skills — one per stage of the eval lifecycle. Each
 
 - **[write-eval-scorer](write-eval-scorer/)** — Implement one narrow scorer: match method to evidence and stakes, anchor rubrics with examples, handle refusals, timeouts, and parse failures.
 - **[validate-eval-scorer](validate-eval-scorer/)** — Validate a scorer against expert labels: agreement with uncertainty, severity-weighted confusion, shortcut probes, and a fitness verdict for gating.
+- **[deploy-braintrust-evaluator](deploy-braintrust-evaluator/)** — Put a validated scorer or classifier on real traffic: input scope, inline testing before saving, online-scoring rules, activation, and backfill with a cost estimate.
 
 **Experiments**
 
@@ -54,6 +55,7 @@ Narrow, composable artifact skills — one per stage of the eval lifecycle. Each
 
 - **[probe-capability-and-variability](probe-capability-and-variability/)** — Run the same dataset under variants to measure either the ceiling of what a system can do (`pass@k`) or the spread of how reliably it does it (`pass^k`).
 - **[discover-agent-failures](discover-agent-failures/)** — Open-ended search for unanticipated failure modes, clustered and triaged into a root-cause taxonomy and frozen regression items.
+- **[discover-trace-topics](discover-trace-topics/)** — Build the clustering instrument itself: preprocessor, facet prompt, no-match policy, and the automation that discovers a label set from traffic when none exists yet.
 - **[red-team-agent](red-team-agent/)** — Adversarial testing against an explicit threat model, prioritizing attack-family coverage over raw success rate, producing existence claims and mitigations.
 
 **Reporting and production**
@@ -74,8 +76,21 @@ The four elicitation regimes are easy to confuse, and mislabeling which one you 
 | Failure discovery | an enumeration | `discover-agent-failures` |
 | Red teaming | existence of a breaking input | `red-team-agent` |
 
+`discover-trace-topics` and `discover-agent-failures` both say "discover" and are not the same job.
+Topics builds the **instrument** that turns unlabeled traffic into clusters; failure discovery is
+the **investigation** that turns candidates into a root-cause taxonomy and frozen regression items.
+Topics is usually a step inside failure discovery, not a substitute for it.
+
+Instrument choice, when the request is "label our traffic somehow":
+
+| The label set is | Instrument | Skill |
+| --- | --- | --- |
+| Known and stable | classifier | `write-eval-scorer` → `deploy-braintrust-evaluator` |
+| A 0–1 criterion | scorer | `write-eval-scorer` → `validate-eval-scorer` |
+| Not known yet | facet + clustering | `discover-trace-topics` |
+
 ## Conventions
 
 - **Card format.** Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` — plus a `Braintrust` section carrying the platform mechanics for that stage. It is compact procedural memory, retrieved on demand.
 - **Numbers live in `references/`.** Cards carry the procedure; thresholds carry their hedge and provenance in the reference file. A number that *is* the method (rule of three, K ≥ 3 runs, ≥ 2 raters) stays in the card; tunable defaults (κ floors, item counts, gate thresholds) do not.
-- **Provenance tags.** Empirical claims in `references/` carry `[guide §N]`, `[guide §N → source]` where the guide is paraphrasing, or `[pending]` where a claim is not yet in published prose and should be re-checked before external use.
+- **Provenance tags.** Empirical claims in `references/` carry `[guide §N]`, `[guide §N → source]` where the guide is paraphrasing, or `[pending]` where a claim is not yet in published prose and should be re-checked before external use. Platform mechanics — tool names, argument shapes, product defaults — carry `[platform]`. They are not empirical claims and have no guide section, but they go stale the same way, so re-check them against the shipped tool surface before relying on one externally.

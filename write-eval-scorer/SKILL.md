@@ -21,16 +21,19 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Do
 
-1. Name **one** criterion. If the request combines several, split them before writing any code
-   or rubric.
+1. Name **one** criterion, and its output contract: a **score** (0–1, needs a numeric mapping) or
+   a **classification** (one label from a fixed set, needs no-match behavior). If the request
+   combines several criteria, split them before writing any code or rubric.
 2. Match the method to the evidence — and let **stakes override convenience**. Objective →
    deterministic. Subjective → anchored rubric or human. A checkable outcome on a
    safety-critical path still needs sampled human review, because what is most likely wrong is
    the check's *scope*.
-3. Choose the level: **trace-based** scoring localizes failures, **group-based** detects
-   regressions. Most criteria need both.
+3. Set two **independent** axes and keep them apart. **Input scope** — span, trace, or group; how
+   much one evaluator call sees, default trace. **Reporting level** — per-item scoring localizes
+   failures, aggregate detects regressions. Most criteria need both reporting levels.
 4. For rubrics, write criteria as **anchored examples, not descriptions**, each scored
-   separately, requiring structured output that carries the evidence used.
+   separately, requiring structured output that carries the evidence used. Have the model emit
+   **semantic classes, not numbers**, and map classes to scores outside the model.
 5. Define failure handling, keeping the kinds apart: **system** failures (refusal, invalid
    output, wrong state) are scored, never dropped; **harness** failures (your own parallelism,
    exhausted credits) are missing data in the status field.
@@ -57,6 +60,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 ## Risk
 
 - Judge bias — self-preference, position, verbosity — produces confident, invalid scores.
+- A judge reads text the system under test wrote, and that text can address the judge directly.
+  The bias controls assume a miscalibrated judge, not one being spoken to — contract §9.
 - A scorer without trace access can only judge the final answer, however the criterion was
   written.
 - Silent exclusions are the most dangerous failure: the aggregate answers "how did the system do
@@ -77,3 +82,10 @@ harness failure → the per-item **status** field, excluded from the aggregate. 
 `scores`, the aggregate silently becomes "performance on surviving items" with no way to recover
 the distinction. Run these same scorers on live traffic (same names, same versions) so offline
 and online numbers stay comparable.
+
+Iterate the definition **inline before saving it**, then save, then re-test the *saved* version on
+the same examples — saving is a step that can change behavior, and only the second test catches it.
+Default the judge to a small model and escalate on measured failure, not on the suspicion that a
+bigger one would do better; judge cost is paid per item on every run, forever. Getting a saved
+evaluator onto live traffic — rule, sampling, activation, backfill — is
+`deploy-braintrust-evaluator`.

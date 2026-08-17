@@ -39,6 +39,10 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 6. Set the lifecycle: headroom at both ends, dev/test separation with **counted test touches**,
    the leakage controls in `reference.md`, refresh against current production mix, and the
    datasheet.
+7. State the **iteration budget before iterating** (`reference.md`) — how many experiments before
+   stopping to reflect, one coherent change each, the same dev slice throughout, and the winner
+   running once against test. A budget set afterwards is a description of what you did, not a
+   control on it.
 
 ## Avoid
 
@@ -47,6 +51,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 - Do not do the sample-size arithmetic here.
 - Do not treat the transform pipeline as neutral plumbing — assert an invariant after every
   transform and version the pipeline like a scorer.
+- Do not store text derived by a component you are still changing. Store the reference to the
+  source and re-derive, or the dataset freezes a snapshot of the thing under iteration.
 - Do not down-weight a corpus whose labels prove unusable; drop it, and report the drop.
 
 ## Check
@@ -81,3 +87,8 @@ Build the production-to-dataset pipeline with **human review queues**: sample li
 review, append. Keep benchmark scaffolding in **separate, clearly named datasets** — once mixed,
 the distinction between measuring your construct and the benchmark's is unrecoverable. Counting
 test touches is a discipline the platform will not enforce; track it in the dataset description.
+
+For items sourced from logs, store the **reference** — `trace_ref`, `group_ref`, or
+`_full_row_id_ref` — not materialized text derived from the trace. Deduplicate on the stable
+identity of the referenced unit. Row shapes are in
+`discover-trace-topics/references/facet-pipeline.md`.
