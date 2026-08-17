@@ -56,8 +56,8 @@ experiment's rows and check the survivor count:
 - Trust the averages only when **`ok = roots − errored`** matches the dataset size
   you expected.
 
-Fetch the rows via BTQL / the experiment fetch endpoint (the `braintrust-analyze`
-skill and `bt_helpers.py` already do paginated, retrying pulls). Note the fetch
+Fetch the rows via BTQL / the experiment fetch endpoint (`bt_helpers.py` already does
+paginated, retrying pulls). Note the fetch
 **caps at 1000 rows** — paginate with the cursor, or you'll silently summarize a
 partial set.
 
