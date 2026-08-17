@@ -7,6 +7,7 @@ scorers, and a harness you can execute, not snippets.
 
 | Example | Question it answers | Techniques on display |
 | --- | --- | --- |
+| **[glm-5.2-long-context](glm-5.2-long-context/)** | Can GLM-5.2 retrieve exact facts from 25K–50K tokens of code, and how do cold and warm latencies differ? | AST-derived ground truth, perturbation controls, question-aware deterministic scoring, repeated-prefix latency spans |
 | **[rag-only-enforcement](rag-only-enforcement/)** | Does behavior-based scoring catch what `test_passed` misses when a coding agent is told to find code by vector search only? | Behavior scorers vs. output scorers, four enforcement variants, SWE-bench-derived dataset, subprocess agent tracing, hook-based tool gating |
 
 ## Running one

@@ -74,6 +74,7 @@ routing tables for choosing between them, in **[skills/README.md](skills/README.
 
 Runnable evals built with these skills, in [examples/](examples/):
 
+- **[glm-5.2-long-context](examples/glm-5.2-long-context/)** — Can GLM-5.2 retrieve exact AST-derived facts from 25K–50K tokens of CPython source, and how do cold and warm latencies differ?
 - **[rag-only-enforcement](examples/rag-only-enforcement/)** — Does behavior-based scoring catch what `test_passed` misses when a coding agent is told to locate code via vector search only? Four enforcement variants over SWE-bench Django tasks, with output and behavior scorers side by side.
 
 ## Contributing

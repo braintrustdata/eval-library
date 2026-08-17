@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "evaluation": "long-context-code-retrieval",
+  "evaluation_timestamp": "2026-06-25T20:29:05Z",
+  "model": {
+    "id": "zai-org/GLM-5.2",
+    "provider": "Baseten"
+  },
+  "source": {
+    "organization": "Braintrust",
+    "blog": "https://www.braintrust.dev/blog/glm-52-vs-opus-48-long-context-retrieval",
+    "every_eval_ever_schema": "0.2.2",
+    "aggregate_artifact_ids": {
+      "T25": "8a84a7ad-452a-5555-ad96-784641e63122",
+      "T50": "3f84d97c-0f66-5331-89dc-5aa104c120fc"
+    }
+  },
+  "tiers": {
+    "T25": {
+      "context_tokens": 25000,
+      "dataset_rows": 100,
+      "trials": 3,
+      "scored_rows": {
+        "ASTSemanticMatch": 300,
+        "SubstringMatch": 300,
+        "FactualityJudge": 296
+      },
+      "scores": {
+        "ASTSemanticMatch": 0.833333,
+        "SubstringMatch": 0.766667,
+        "FactualityJudge": 0.807432
+      },
+      "latency_ms": {
+        "run_1": {"mean_ttft": 6542, "mean_total": 6777},
+        "run_2": {"mean_ttft": 6632, "mean_total": 6860},
+        "run_3": {"mean_ttft": 6502, "mean_total": 6736}
+      },
+      "cost_usd": {
+        "mean_per_trace": 0.0208,
+        "perturbation_cost_per_correct": 0.046
+      }
+    },
+    "T50": {
+      "context_tokens": 50000,
+      "dataset_rows": 100,
+      "trials": 2,
+      "scored_rows": {
+        "ASTSemanticMatch": 200,
+        "SubstringMatch": 200,
+        "FactualityJudge": 199
+      },
+      "scores": {
+        "ASTSemanticMatch": 0.845,
+        "SubstringMatch": 0.765,
+        "FactualityJudge": 0.816583
+      },
+      "latency_ms": {
+        "run_1": {"mean_ttft": 4513, "mean_total": 4805},
+        "run_2": {"mean_ttft": 4837, "mean_total": 5115},
+        "run_3": {"mean_ttft": 4826, "mean_total": 5105}
+      },
+      "cost_usd": {
+        "mean_per_trace": 0.0415,
+        "perturbation_cost_per_correct": 0.046
+      }
+    }
+  },
+  "notes": {
+    "scored_answer": "Only the first (cold) call was scored; all three calls contributed latency measurements.",
+    "cost_scope": "Run-specific operational economics; provider pricing, routing, caching, retries, and serving configuration can change these values.",
+    "missing_judge_rows": "FactualityJudge counts are lower where the external judge did not return a valid score."
+  }
+}
+
