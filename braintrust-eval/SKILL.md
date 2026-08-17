@@ -1,27 +1,35 @@
 ---
 name: braintrust-eval
 description: >-
-  Run an independent, end-to-end eval in Braintrust — from a plain-English idea
-  to a scored, compared experiment. Guides dataset sourcing (existing vs.
-  synthetic), scorer design, and a hygienic experiment run. Use when the user
-  wants to run a Braintrust eval, run an experiment, eval or compare
-  models/prompts, score model outputs, or "set up an eval" for a task.
+  Execute an eval end to end against a live Braintrust project — org and credential
+  selection, finding and importing a dataset, writing the task and scorer code,
+  running the experiment behind smoke gates and quota preflight, and tracing agentic
+  `claude -p` runs. Use when an eval has to actually run: "run this eval," "set up an
+  eval for X," "compare these models in Braintrust." Do not use to design a dataset,
+  scorer, experiment, or release gate in the abstract — the lifecycle cards own what
+  to build and why; this owns making it happen.
 ---
 
 # Braintrust Eval
 
-Take the user from "I want to eval X" to a clean, comparable Braintrust
-experiment. This skill owns the **judgment-heavy** parts of an eval — what the
-dataset should be, which scorers to use and how they're written, and running the
-experiment without the reliability/hygiene traps. It is deliberately interactive:
-ask, propose, get approval, then spend money.
+The **runbook**. Take the user from "I want to eval X" to a clean, comparable
+Braintrust experiment that actually ran. Deliberately interactive: ask, propose,
+get approval, then spend money.
+
+This skill owns **execution** — credentials, imports, code, run hygiene, tracing,
+and the approval gates that keep a paid run from starting on an unreviewed plan.
+It does not own methodology: each phase below names the lifecycle card that does,
+and those are worth loading when a judgment call is live rather than routine.
+
+Shared platform mechanics — pinning, naming, safe reads, run hygiene — are in
+`references/platform-mechanics.md`, not restated per phase.
 
 ## When to use / when not
-- **Use this** to design and run a new eval or model/prompt comparison.
-- **Getting data into Braintrust** (mapping a HuggingFace / CSV / trace source into
-  a BT dataset)? Handled in Phase 3 via `references/dataset-import.md`.
-- **Pulling or plotting results** from experiments that already ran? Out of scope here —
-  that is analysis, not eval design.
+- **Use this** to run a new eval or model/prompt comparison against a real project.
+- **Getting data into Braintrust** (a HuggingFace / CSV / trace source into a BT
+  dataset)? Phase 3, via `references/dataset-import.md`.
+- **Pulling or plotting results** from experiments that already ran? Out of scope —
+  that is `analyze-eval-experiment`.
 
 Work through the phases in order. Do not skip the approval gates — the whole point
 is that the user signs off on the dataset and the scorers before a paid run.
@@ -88,17 +96,17 @@ From the intake, decide the sourcing route and propose it:
 Recommend one route, explain the tradeoff in a sentence, and **wait for the user
 to pick.** Then map + push the chosen source per `references/dataset-import.md`.
 
-**Provenance check (after the pick, before import).** For a sourced dataset,
-spend a couple of minutes establishing *why it's trustworthy* and log it to
-`ANALYSIS-SUMMARY.md`: who built it (org/lab), HF downloads + likes, the
+`build-eval-dataset` owns the rest of the sourcing argument — population, strata,
+label provenance, splits, headroom — and `size-eval-dataset` owns how many items.
+Load them when the composition is a real decision rather than "use this benchmark."
+
+**Provenance check (after the pick, before import).** Unique to this phase, and
+worth the few minutes: establish *why the dataset is trustworthy* and log it to
+`ANALYSIS-SUMMARY.md` — who built it (org/lab), HF downloads + likes, the
 associated paper and where it was published/cited, GitHub stars, and whether
 other benchmarks/leaderboards use it. If the trail is thin, say so — a
 low-provenance dataset is usable but the writeup should carry that caveat.
 (Recipe: `references/hf-dataset-search.md` § Provenance.)
-
-> **Ground-truth caution:** a "reference" answer isn't always correct. Prefer
-> LLM-judge or similarity scoring over exact-match unless the answers are
-> genuinely canonical.
 
 ## Phase 4 — Score planning → **TWO APPROVAL GATES**
 
@@ -120,21 +128,24 @@ deterministic scorer — and get sign-off.
 mid-eval, for a new track, or as a "small addition" — gets the same treatment
 before it runs: **explicitly alert the user that a new scorer is being added,
 show what it measures and how (prompt/logic verbatim), and wait for sign-off.**
-Never let a new metric slip into an experiment inside a bigger change. A few defaults worth keeping:
+Never let a new metric slip into an experiment inside a bigger change.
+
+`write-eval-scorer` owns how a scorer is written — method choice, anchored
+rubrics, emitting classes rather than numbers, failure handling — and
+`validate-eval-scorer` owns whether it can be trusted for anything beyond
+exploration. Two run-shaped defaults belong here, though:
+
 - **Measure the thing the change actually moves.** A broad overall score can hide
   a targeted effect; scope the metric to the slice under test.
-- LLM judges: **binary labels, temperature 0, explanations on.** (Binary per
-  example still yields a continuous aggregate across the dataset.)
-- **"Deterministic" means code-computed, not pass/fail.** When quality is graded
-  (similarity, recall, overlap), return a continuous 0–1 score — reserve binary
-  for true guards (rendered / didn't). Say this when presenting the lineup so
-  "Deterministic" isn't read as "exact match."
-- **Don't tune a scorer to flatter results — document the artifact instead.**
-- **Datasets and scorers are versioned Braintrust artifacts.** Data always lands
-  as a BT Dataset (never inline in code). Push scorers so they're visible in the
-  UI: LLM-judge prompts as pushed scorer functions; heavy code scorers (browser,
-  torch, etc.) run locally but record their file + git/content hash in experiment
-  metadata so every run points at an exact scorer version.
+- **"Deterministic" means code-computed, not pass/fail.** Say this when presenting
+  the lineup, or the table reads as "exact match" and the user approves something
+  narrower than you meant.
+
+**Where the code lives.** Data always lands as a BT Dataset, never inline in code.
+Push scorers so they're visible in the UI: LLM-judge prompts as pushed scorer
+functions; heavy code scorers (browser, torch) run locally but record their file
+plus git/content hash in experiment metadata, so every run points at an exact
+scorer version even though the code never left your machine.
 
 ## Phase 5 — Run loop
 
@@ -151,12 +162,12 @@ estimated up front (stronger models can be several × the per-run cost).
 **Small dataset → trials.** If **n < 30**, run **3 trials per row**
 (`Eval(trial_count=3)`) so per-row noise doesn't masquerade as a variant
 effect; report scores as means across trials. State the trial count in the
-experiment metadata and the results table. (Trials multiply cost and quota —
-include them in the quota-preflight math.)
+experiment metadata and the results table. Trials multiply cost and quota —
+include them in the preflight math below. (`design-eval-experiment` owns K for
+anything gating.)
 
-**Naming (do this every time).** Name each experiment `v1_<model>` /
-`v2_<model>` so runs group and sort cleanly and Braintrust auto-diffs against the
-previous same-named run. Good/bad examples + the rename recipe:
+**Naming.** `v1_<model>` / `v2_<model>`, per `references/platform-mechanics.md`
+§5. The rename recipe, for when `Eval()` generates its own suffix, is in
 `references/experiment-hygiene.md`.
 
 **Headless subprocess agents: brainstorm the tool allowlist deliberately.**
@@ -197,9 +208,9 @@ clickable confirmation (AskUserQuestion) and **do not launch the full run until
 they say yes.** Never roll from smoke into the full run in one motion, even when
 the smoke is clean.
 
-**Throttle + retry.** Default to bounded concurrency (`maxConcurrency` /
-`EVAL_CONCURRENCY`) and 429 backoff honoring `Retry-After`; drop concurrency for
-free-tier / rate-limited providers.
+**Throttle + retry.** Bounded concurrency (`maxConcurrency` / `EVAL_CONCURRENCY`,
+per `references/platform-mechanics.md` §7) and 429 backoff honoring `Retry-After`;
+drop concurrency further for free-tier providers.
 
 **Structure the trace.** Log spans the way these projects settled on:
 root span `type:"task"` carrying the overall input/output/metadata; one named
@@ -217,40 +228,38 @@ Deliver the env config via `--settings` file (user settings.json env overrides
 subprocess env!) and **verify spans actually landed** — hooks fail silently.
 Full recipe + failure catalog: `references/subprocess-tracing.md`.
 
-**Verify completion — don't trust "completed."** A run that reports success can be
-mostly errored. Check `ok = roots − errored` before believing any aggregate; a
-rate-limited run can log the rows but have most of them error out.
+**Verify completion — don't trust "completed."** `ok = roots − errored`, before
+believing any aggregate (`references/platform-mechanics.md` §2; the row-level
+definitions are in `references/experiment-hygiene.md`).
 
-**One variable at a time.** Keep the dataset/inputs fixed across variants so the
-comparison is clean. Don't slip in an extra fix mid-run — rerun all variants
-together or not at all.
+**One variable at a time.** Keep the dataset and inputs fixed across variants.
+Don't slip in an extra fix mid-run — rerun all variants together or not at all.
 
 ## Phase 6 — Batch summary & sanity check
 
-After the batch finishes, don't just report a number — summarize and pressure-test
-it, because a first implementation is usually not fully correct.
+A first implementation is usually not fully correct, so pressure-test the batch
+before reporting anything from it. This phase asks one question — *did the run
+work?* — and stops there. What the numbers mean is `analyze-eval-experiment`.
 
-1. **Results table.** One row per experiment in the batch, headline scores side by
-   side so variants compare at a glance:
+1. **Results table**, one row per experiment, always with `n (ok)` beside the
+   scores so a half-errored run can't masquerade as a clean one. Shape and the
+   integrity check: `references/experiment-hygiene.md`.
 
-   > | Experiment | n (ok) | answer_quality | policy | avg latency |
-   > |---|---|---|---|---|
-   > | `v1_gpt-4o` | 30 | 0.82 | 0.90 | 1.2s |
-   > | `v1_claude-opus-4-8` | 30 | 0.88 | 0.93 | 1.6s |
+2. **Scan the traces.** Open the lowest-scoring rows and every errored one and
+   look for signs the *run* is broken rather than the model being bad — the
+   checklist is in `references/experiment-hygiene.md`. Two red flags matter most
+   and are easy to miss because neither produces an error:
+   - A score **identical across variants on every row** — the scorer is measuring
+     something the variants cannot affect, or both saturate a ceiling.
+   - In agentic evals, **the agent never using the capability under test.** Log
+     tool usage per run and check it; a comparison where the variable is never
+     exercised is Sonnet-vs-Sonnet with extra steps.
 
-2. **Scan the traces.** Open a sample of traces — especially low-scoring and any
-   errored ones — and look for signs the *run itself* is wrong: empty/garbled
-   outputs, tool failures, a scorer that never fires, mangled inputs. **Flag likely
-   problems explicitly** instead of reporting scores as if they're final.
-   Red flags worth chasing: a score **identical across variants on every row**
-   (scorer measuring something the variants can't affect, or a ceiling both
-   saturate); and in agentic evals, **the agent not using the capability under
-   test** (log tool usage per run and check it — a comparison where the variable
-   is never exercised is Sonnet-vs-Sonnet).
-
-3. **Analysis.** Give a 3–5 sentence read of what the scores say — which variant
-   won, where it's failing, and whether anything looks like a harness bug vs. a
-   real model difference.
+3. **Say what you found**, in a few sentences: which variant leads, where it
+   fails, and specifically whether anything looks like a harness bug rather than
+   a model difference. Flag suspicion explicitly — "these numbers may not be
+   trustworthy because X" beats a confident wrong summary, and this is the last
+   point where a broken run is cheap to catch.
 
 ## Phase 7 — Hand off to deeper analysis
 For intervals, pairing, subgroups, and fragility, hand off to **`analyze-eval-experiment`** —
@@ -297,15 +306,17 @@ raw dumps. Deeper analysis continues this same file.
 ---
 
 ## Overridable defaults (sticky for the session, say so to override)
-- Before a full run that leans on an external service: check the plan's quota,
-  do the rows×calls math, and preflight one mutation call.
-- Run a 5-example smoke test first, confirm 0 errors, **then delete the smoke
-  experiment** before the full set.
-- **Pause after every smoke**: present results, take questions/tweaks, and get
-  an explicit clickable "yes" before launching the full run.
-- **n < 30 → 3 trials per row** (`trial_count=3`); means across trials.
-- Before re-running a same-named experiment, **delete the prior partial/smoke
-  run automatically; confirm before deleting a completed run.**
+
+Recaps of the phases above, in checklist form: quota preflight before any run that
+leans on an external service; 5-example smoke at 0 errors, then delete it; pause
+after every smoke for an explicit clickable yes; `n < 30 → trial_count=3`; delete
+the prior partial or smoke automatically before a same-named rerun, and confirm
+before deleting a completed one; one variable at a time with the dataset fixed;
+append methodology and big learnings to `ANALYSIS-SUMMARY.md` as you go. Smoke
+tests verify that it *runs* — never conclude which variant is better from n=5.
+
+The three below are stated only here, and each one changes what the numbers mean:
+
 - **Failed runs: attribute before you retry — failures can be signal, not
   noise.** Classify each failure first: (a) *transient infrastructure* (API
   drops) → retry and purge the dead original, disclosing the retry count;
@@ -319,9 +330,9 @@ raw dumps. Deeper analysis continues this same file.
   **appends — it does not replace the dead row**. When a retried row now
   *succeeds*, purge only its **superseded dead original** (delete that one
   event) so the case isn't double-counted. **Never purge a failure that is
-  still a failure** — keep it and let it count toward the survival rate; that
-  decomposition is often the finding. Re-pull the summary after; aggregates
-  that still count the duplicate can flip a comparison's apparent winner.
+  still a failure** — it counts toward the survival rate. Re-pull the summary
+  after; aggregates that still count the duplicate can flip a comparison's
+  apparent winner.
 - **`ANALYSIS-SUMMARY.md` mirrors the live experiments — it is a summary of
   current learnings, not an append-only log.** When the user asks to delete a
   completed experiment or rerun a new version of it, **ask them first: archive
@@ -333,9 +344,6 @@ raw dumps. Deeper analysis continues this same file.
   sections in the same breath. Remember Braintrust experiments are
   unrecoverable once deleted — settle the archive question and capture the
   doc content BEFORE deleting, and keep any plots/caches wanted for the story.
-- Smoke tests verify it *runs* — never conclude "which is better" from n=5.
-- One variable at a time; dataset fixed across variants.
-- Append methodology + big learnings to `ANALYSIS-SUMMARY.md` as you go.
 
 ## Troubleshooting
 - **`BRAINTRUST_API_KEY_* not set`** → the chosen org's key is missing from `.env`;
