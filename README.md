@@ -159,38 +159,9 @@ Runnable evals built with these skills, in [examples/](examples/):
 
 - **[rag-only-enforcement](examples/rag-only-enforcement/)** — Does behavior-based scoring catch what `test_passed` misses when a coding agent is told to locate code via vector search only? Four enforcement variants over SWE-bench Django tasks, with output and behavior scorers side by side.
 
-## Conventions
-
-Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` —
-plus a `Braintrust` section. Compact procedural memory, retrieved on demand.
-
-**Numbers live in `references/`.** Cards carry the procedure; thresholds carry their
-hedge and provenance in the reference file. A number that *is* the method (rule of three,
-K ≥ 3 runs, ≥ 2 raters) stays in the card. Tunable defaults — κ floors, item counts, gate
-thresholds — do not, and none of them are laws.
-
-**Shared text is mirrored, not restated.** [skills/INTERACTION.md](skills/INTERACTION.md)
-defines how every skill handles ambiguity, modes, and uncertainty labelling.
-[skills/PLATFORM.md](skills/PLATFORM.md) holds the Braintrust mechanics common to every
-stage. Both are mirrored into each skill's `references/` so a directory works standalone.
-
-**Two provenance tags**, both checkable:
-
-- `[Author et al. YEAR]` — the empirical claim traces to that source, which is the
-  authority. Where a reference paraphrases, the source wins.
-- `[platform]` — product behavior rather than an empirical claim. Not citable, but it goes
-  stale when the product ships a change, so re-check it against the shipped surface before
-  relying on it externally.
-
-An untagged claim is either standard method — the rule of three, Wilson intervals,
-clustered standard errors — or an editorial judgment about practice. Neither needs a
-citation; both should still survive being argued with.
-
-A number quoted without its hedge is a misquote, whatever its provenance.
-
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Adding a skill or an example: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

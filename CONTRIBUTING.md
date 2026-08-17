@@ -32,9 +32,17 @@ skill from swallowing requests that belong elsewhere.
 belongs in `skills/PLATFORM.md` or `skills/INTERACTION.md`, cited rather than restated.
 Duplication across cards drifts silently and is the main thing this library keeps fighting.
 
-**Numbers carry a hedge and a source.** Thresholds go in `references/`, never in the card,
-and every empirical claim carries a provenance tag. A number that *is* the method — the
-rule of three, K ≥ 3 runs, ≥ 2 raters — stays in the card. Tunable defaults do not.
+**Numbers carry a hedge.** Thresholds go in `references/`, never in the card. A number
+that *is* the method — the rule of three, K ≥ 3 runs, ≥ 2 raters — stays in the card;
+tunable defaults do not, and none of them are laws. A number quoted without its hedge is
+a misquote.
+
+**Two provenance tags, both checkable.** `[Author et al. YEAR]` means the claim traces to
+that source, which is the authority where a reference paraphrases. `[platform]` marks
+product behavior rather than an empirical claim — not citable, but it goes stale when the
+product ships a change. Untagged is fine and covers most claims: standard method, or an
+editorial judgment about practice. Neither needs a citation; both should survive being
+argued with. Do not add a tag pointing at anything a reader cannot open.
 
 **No dead references.** Every `references/*.md` pointer, cross-skill mention, and link
 must resolve. No paths from your machine, no pointers into repos a reader cannot open, no
