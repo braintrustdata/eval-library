@@ -61,8 +61,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 A spec is not a platform object; its clauses become three that are. Each **review question**
 becomes a per-criterion score in a **human review queue** with free-text notes — this is how
 the spec starts producing labels instead of sitting in a doc. Each **failure mode** becomes its
-own scorer with a stable name, so a regression in one mode is its own column rather than
-averaged away. Applied to live traffic, violations become **trace classifications** you can
+own scorer (`references/platform-mechanics.md` §5), so a regression in one mode is its own
+column rather than averaged away. Applied to live traffic, violations become **trace classifications** you can
 alert and slice on. Tag the spec version in scorer span metadata, and treat a spec-version
 boundary like a scorer-version boundary: do not compare across it. When a review queue surfaces
 a violation the spec does not cover, that is a spec gap — route it back here rather than

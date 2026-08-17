@@ -63,16 +63,15 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 **Encode each row as a scorer-plus-threshold check on the confirmatory experiment and block
 promotion on any failing row.** A gate producing a chart instead of a block is not a gate. Reuse
-scorers by name and version; a gate wired to a differently-named scorer silently stops testing
-what it was written for. Check each scorer's fitness statement first — where a scorer is
-prohibited from gating, **do not attach it at all**, since absence beats a warning nobody reads.
+scorers by name and version (`references/platform-mechanics.md` §5); a gate wired to a
+differently-named scorer silently stops testing what it was written for. Check each scorer's
+fitness statement first — where a scorer is prohibited from gating, **do not attach it at all**,
+since absence beats a warning nobody reads.
 
-Several rows need derived values in custom columns rather than a native score: the paired
-difference with clustered CI; per-category win rate and regression rate; the leave-one-out
-recomputation; `pass^k` across the K runs, not a mean of run means; the Wilson or rule-of-three
-**upper bound** for safety; p95 per run then the **worst** run. The last two are the ones most
-often wired wrong — pooling runs before taking p95, or gating on the observed violation rate
-instead of its bound.
+Rows needing a derived value rather than a native score: the paired difference with clustered CI;
+per-category win rate and regression rate; the leave-one-out recomputation; `pass^k` across the K
+runs; the Wilson or rule-of-three **upper bound** for safety; p95 per run then the **worst** run.
+§8 lists the wiring failures these invite — the last two attract them most.
 
 Gate against the experiment marked **confirmatory**, pinned to the held-out dataset version, on a
-cached pull that followed the 1,000-row cursor.
+cached pull.

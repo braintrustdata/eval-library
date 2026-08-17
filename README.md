@@ -8,12 +8,13 @@ Each skill is a directory containing a `SKILL.md` (and any supporting `reference
 
 Interactive, end-to-end. These orchestrate a whole job and may hand off to the artifact skills below.
 
-- **[braintrust-eval](braintrust-eval/)** — Run an independent, end-to-end eval in Braintrust: from a plain-English idea to a scored, compared experiment (dataset sourcing, scorer design, hygienic experiment runs).
-- **[bt-analyze-eval-results](bt-analyze-eval-results/)** — Turn eval results into a defensible ship / no-ship decision: confidence intervals, run-to-run variance, subgroup breakdowns, paired comparisons, and a stats-grounded release gate.
+- **[braintrust-eval](braintrust-eval/)** — Run an independent, end-to-end eval in Braintrust: from a plain-English idea to a scored, compared experiment (dataset sourcing, scorer design, hygienic experiment runs). Hands off to `analyze-eval-experiment` for the analysis pass.
 
 ## Eval lifecycle skills
 
-Narrow, composable artifact skills — one per stage of the eval lifecycle. Each owns a single artifact, is invocable on its own, and names the skill that consumes its output next. All share the interaction contract in [INTERACTION.md](INTERACTION.md), mirrored into each skill's `references/` so a skill directory works standalone.
+Narrow, composable artifact skills — one per stage of the eval lifecycle. Each owns a single artifact, is invocable on its own, and names the skill that consumes its output next.
+
+Two files are shared by every card and mirrored into each skill's `references/` so a skill directory works standalone: the interaction contract in [INTERACTION.md](INTERACTION.md), and the platform mechanics in [PLATFORM.md](PLATFORM.md). Edit the root copy and re-mirror; never edit a mirror directly.
 
 **Foundation**
 
@@ -90,7 +91,8 @@ Instrument choice, when the request is "label our traffic somehow":
 
 ## Conventions
 
-- **Card format.** Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` — plus a `Braintrust` section carrying the platform mechanics for that stage. It is compact procedural memory, retrieved on demand.
+- **Card format.** Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` — plus a `Braintrust` section. It is compact procedural memory, retrieved on demand.
+- **Shared files are mirrored, not restated.** Mechanics common to every stage live in `PLATFORM.md`; each card's `Braintrust` section cites the relevant section and adds only what is specific to its own stage. If a paragraph would be true of three cards, it belongs in `PLATFORM.md`.
 - **Numbers live in `references/`.** Cards carry the procedure; thresholds carry their hedge and provenance in the reference file. A number that *is* the method (rule of three, K ≥ 3 runs, ≥ 2 raters) stays in the card; tunable defaults (κ floors, item counts, gate thresholds) do not.
 - **Provenance tags.** Empirical claims in `references/` carry `[guide §N]`, `[guide §N → source]` where the guide is paraphrasing, or `[pending]` where a claim is not yet in published prose and should be re-checked before external use. Platform mechanics — tool names, argument shapes, product defaults — carry `[platform]`. They are not empirical claims and have no guide section, but they go stale the same way, so re-check them against the shipped tool surface before relying on one externally.
 

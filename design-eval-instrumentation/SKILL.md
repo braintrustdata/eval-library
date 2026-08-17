@@ -60,8 +60,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Four objects: **traces** (behavioral record), **datasets** (sampled population), **scorers**
-(instruments), **experiments** (repeated observations). Traces first — everything consumes them.
+Of the four objects (`references/platform-mechanics.md` §1), this stage owns **traces** — the one
+everything else consumes, and the only one you cannot backfill.
 
 Field placement decides what the platform can ever do: scores in native `scores` (0–1);
 tokens/latency/cost in **native metrics**, or they cannot be charted or gated on; slicing

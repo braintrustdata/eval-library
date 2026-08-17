@@ -73,8 +73,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 The validation run is an experiment, and following the shape exactly is what makes it repeatable
 rather than a one-off notebook: golden set as a **versioned dataset** → run the candidate scorer
 over it **as an experiment** → **diff against human labels** → compute κ and confusion heatmaps
-in **custom columns or an exported notebook** (κ is not native) → **re-run on every
-scorer-version bump**.
+in **custom columns or an exported notebook** (`references/platform-mechanics.md` §8) → **re-run
+on every scorer-version bump**.
 
 This only works if the scorer wrote its **evidence into span output**; without it a disagreement
 shows two numbers and no way to adjudicate. **Scorer name and version in span metadata** is what

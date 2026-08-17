@@ -74,9 +74,10 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Apply **the same scorers** that ran offline — same names, same versions — via **online scoring**.
-Identical names are what make offline and online comparable; a differently-named production scorer
-produces a second, incomparable series. Use **trace classifications** for the categorical side —
+Apply **the same scorers** that ran offline — same names, same versions
+(`references/platform-mechanics.md` §5) — via **online scoring**. This is the case §5 exists for:
+a differently-named production scorer produces a second series that looks comparable and is not.
+Use **trace classifications** for the categorical side —
 spec violations, suspected failure modes, attack families — since classifications are what you
 slice and alert on, and they double as the clustering step for open-ended failure discovery. Record
 each scorer's approved use in its description so nobody promotes a trend scorer into a gate.

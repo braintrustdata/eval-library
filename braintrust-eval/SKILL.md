@@ -253,8 +253,8 @@ it, because a first implementation is usually not fully correct.
    real model difference.
 
 ## Phase 7 — Hand off to deeper analysis
-For plots and heavier slicing, hand off to analysis (BTQL, cached pulls, Braintrust-styled
-charts) — it continues the running log below.
+For intervals, pairing, subgroups, and fragility, hand off to **`analyze-eval-experiment`** —
+it continues the running log below.
 
 **Turning the log into a blog?** That's a separate step, and not everyone wants
 it — hand off to the **`eval-research-blog-post`** skill (it ships with the

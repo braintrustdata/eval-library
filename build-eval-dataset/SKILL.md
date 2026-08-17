@@ -74,14 +74,14 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Push the dataset and **version it**, then **pin every experiment to a dataset version** — this
-is the mechanism the entire paired-comparison argument depends on, and unpinned experiments
-cannot be item-paired retroactively. A dataset change invalidates cross-experiment comparisons
-exactly like a scorer change; treat the boundary as a wall.
+Push the dataset and **version it**. This stage produces the artifact that
+`references/platform-mechanics.md` §3 depends on — every paired comparison downstream is only
+possible because a version exists to pin to, and a dataset change invalidates cross-experiment
+comparisons exactly like a scorer change.
 
 Populate `metadata` with every stratification field — `split`, `source`, `category`,
-`difficulty`, `adversarial`, `trap`, `ground_truth_by_construction`, `label_provenance`. If a
-stratum is not in metadata it does not exist for reporting.
+`difficulty`, `adversarial`, `trap`, `ground_truth_by_construction`, `label_provenance` — since
+§4 is unforgiving here: a stratum missing at build time cannot be recovered at report time.
 
 Build the production-to-dataset pipeline with **human review queues**: sample live traces,
 review, append. Keep benchmark scaffolding in **separate, clearly named datasets** — once mixed,

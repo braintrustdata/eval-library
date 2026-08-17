@@ -56,9 +56,11 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 ## Braintrust
 
 Read the project before asking — most planning questions answer themselves. Which of the four
-objects exist: **traces** (behavioral record), **datasets** (sampled population), **scorers**
-(instruments), **experiments** (repeated observations)? Traces come first; everything else
-consumes them. Then: are datasets **versioned**? Are scorers named consistently across
-experiments, or renamed per run? Do experiments record independent variables in metadata, or
-only scores? Is anything scoring production traffic? Each "no" is a lifecycle gap — record it in
-the inventory rather than acting on it here.
+objects (`references/platform-mechanics.md` §1) already exist, and in what state? Are datasets
+**versioned** (§3)? Are scorers named consistently across experiments, or renamed per run (§5)?
+Do experiments record independent variables in metadata, or only scores (§4)? Is anything
+scoring production traffic?
+
+Each "no" is a lifecycle gap. Record it in the inventory rather than acting on it here — and
+note that the §3 and §4 gaps are the ones with no retroactive fix, which usually makes them the
+earliest missing artifact even when they are not the most interesting one.

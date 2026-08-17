@@ -66,19 +66,16 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-One experiment per arm, all **pinned to the same dataset version**, with every independent
-variable in **experiment metadata** — model string, decoding params, provider/endpoint/tier, cache
-state, prompt/scorer/tool versions. That metadata is what makes an arm's difference inventory
-recoverable months later; without it, attribution is guesswork.
+Shared mechanics: `references/platform-mechanics.md`. Attribution leans hardest on **§4
+metadata** — the per-arm record of model string, decoding params, provider/endpoint/tier, cache
+state, and prompt/scorer/tool versions *is* the difference inventory, recoverable months later.
+Without it, attribution is guesswork. **§7 hygiene** matters more here than elsewhere too, since
+a throttled provider left unthrottled becomes one more confound in a comparison already carrying
+several.
 
 Name for the factor being toggled, **most-significant first**, so an ablation ladder reads down
-the experiment list in order — Braintrust groups and auto-diffs by name.
+the experiment list in order.
 
-Use cross-experiment diffs for item-paired component estimates, and **group by `metadata`** to
-check whether a component effect is concentrated in one stratum; a component helping only one
-slice is a stratification finding, not a main effect.
-
-Hygiene that protects attribution: **delete** smoke tests and partial arms
-(`DELETE /v1/experiment/{id}`) so they are not read as arms; check **completed-row vs. error
-count** before interpreting; follow the **1,000-row cursor**; set `maxConcurrency` from an env var
-so one throttled provider does not become a confound.
+Use cross-experiment diffs for item-paired component estimates, and group by `metadata` to check
+whether a component effect is concentrated in one stratum; a component helping only one slice is
+a stratification finding, not a main effect.

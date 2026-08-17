@@ -60,15 +60,12 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Pairing is what buys the sample-size reduction, and it is a platform mechanic rather than a
-later statistical choice: pin every arm to the **same dataset version** and compare with
-cross-experiment diffs, which are item-paired by construction. An experiment not pinned cannot
-be paired retroactively, so a design sized for pairing silently reverts to the unpaired
-requirement.
+Shared mechanics: `references/platform-mechanics.md`. Pairing is what buys the sample-size
+reduction, and **§3** makes it a platform decision rather than a later statistical one — a design
+sized for pairing silently reverts to the unpaired requirement if the arms were never pinned. So
+the N you compute here is only achievable if the experiment design honors that.
 
-K runs means K recorded trials, kept so the distribution — not just the mean — is recoverable;
-the worst run is what a latency or reliability gate reads. Planned N and achieved N diverge
-routinely: check **completed-row count against error count** per experiment rather than the
-summary, and follow the **1,000-row pagination cursor**, since a truncated pull looks exactly
-like an underpowered run. Set `maxConcurrency` from an environment variable so a rate-limited
-provider can be throttled without slowing the matrix.
+Planned N and achieved N diverge routinely, which makes the §2 read-safety checks a sizing
+concern and not just an analysis one: a truncated pull looks exactly like an underpowered run,
+and the two call for opposite responses. K runs means K recorded trials (§7); the worst run is
+what a latency or reliability gate reads.

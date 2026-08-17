@@ -56,10 +56,33 @@ upper bound ≈ 3/n = 1.5%. A 0.1% tolerance needs ~3,000 clean trials. `[guide 
   (items, runs, judges, prompts) and tells you which the protocol must average over.
   `[guide §9.1 → NIST AI 800-3 2026; Truong & Koyejo 2026 ch. 5]`
 
+**Bootstrap, for anything that is not a proportion** — mean judge score, latency, cost:
+
+```python
+import numpy as np
+
+def bootstrap_ci(x, n=2000):
+    x = np.asarray(x)
+    means = [np.mean(np.random.choice(x, len(x), replace=True)) for _ in range(n)]
+    return np.percentile(means, 2.5), np.percentile(means, 97.5)
+```
+
 **Paired comparison.** Compare M1 vs. M0 on the same tasks and analyze per-task
 differences; item difficulty cancels and sensitivity improves. Report the paired
 difference with its CI plus wins/losses/ties — never two independent scores side by side.
 `[guide §9.2]`
+
+```python
+diff = np.array(score_B) - np.array(score_A)   # per-item, same order
+lo, hi = bootstrap_ci(diff)
+print(f"mean Δ = {diff.mean():.3f}, 95% CI [{lo:.3f}, {hi:.3f}], "
+      f"B wins {np.mean(diff > 0):.0%} of items")
+```
+
+A CI on the difference excluding 0 means the improvement is real at that confidence; the
+win fraction is what tells you whether it is *consistent* or carried by a few items. Both
+snippets assume the clustering correction above has been applied where items are related —
+bootstrapping rows that are really scenario variants reproduces the unclustered error.
 
 An alternative framing worth knowing: report **P(A > B)** rather than an average
 difference, testing against H₀: P(A>B) = 0.5 with a meaningfulness threshold. The source

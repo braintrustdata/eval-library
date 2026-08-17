@@ -69,9 +69,9 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Deterministic criteria → **code scorers**; subjective → **rubric scorers**. Keep **each
-criterion its own scorer with a consistent name across experiments** — a renamed scorer breaks
-the cross-experiment diff every regression check depends on, so naming is not cosmetic.
+Deterministic criteria → **code scorers**; subjective → **rubric scorers**. Shared mechanics:
+`references/platform-mechanics.md`. **§5** is the one this stage creates rather than consumes —
+one criterion, one scorer, one name, chosen here and depended on by every downstream diff.
 
 Scores in native `scores` (0–1); the judge's **evidence in span output**, which is what makes a
 disagreement adjudicable during validation; **scorer name and version in span metadata**, so a
@@ -80,8 +80,7 @@ rubric revision traces to the results it changed.
 The harness-vs-system split needs two destinations: system failure → a real score in `scores`;
 harness failure → the per-item **status** field, excluded from the aggregate. If both land in
 `scores`, the aggregate silently becomes "performance on surviving items" with no way to recover
-the distinction. Run these same scorers on live traffic (same names, same versions) so offline
-and online numbers stay comparable.
+the distinction.
 
 Iterate the definition **inline before saving it**, then save, then re-test the *saved* version on
 the same examples — saving is a step that can change behavior, and only the second test catches it.

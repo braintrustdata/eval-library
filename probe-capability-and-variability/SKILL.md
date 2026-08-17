@@ -65,11 +65,13 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 ## Braintrust
 
 Both regimes share one shape: **run the same dataset under several variants as separate
-experiments**, then compare the max (capability) or the spread (variability). Pin every variant to
-the **same dataset version** — variants across different versions measure dataset drift — and keep
-the **scorer name and version identical**, since a scorer change between variants is
-indistinguishable from a real effect. Run **K trials per experiment** keeping per-run results; a
-stored mean cannot be un-averaged.
+experiments**, then compare the max (capability) or the spread (variability). Shared mechanics:
+`references/platform-mechanics.md`. Two apply with unusual force here, because a variant matrix
+turns any inconsistency into apparent signal: pin every variant to one dataset version (§3) or
+you are measuring dataset drift, and keep the **scorer name and version identical** across
+variants (§5), since a scorer change between variants is indistinguishable from a real effect.
+Keep per-run results (§7) — a stored mean cannot be un-averaged, and the spread is the
+measurement.
 
 Put the variant dimension in the **prefix** so the matrix reads: `r0-base`, `r1-prompt`,
 `r2-fewshot`, `r3-scaffold`; or `fmt-json_set`, `fmt-md_set`. Prefix elicitation runs distinctly

@@ -64,18 +64,15 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Every number should come from **one cached pull**, not repeated fetches: follow the **1,000-row
-pagination cursor** (a truncated pull produces a confidently wrong n), then run every table and
-chart off the cache, since re-fetching makes each pass a fresh reliability risk.
+Shared mechanics: `references/platform-mechanics.md`. Every number in the report comes off **one
+cached pull** (§2) — a truncated pull produces a confidently wrong n, and n is the number readers
+check first. Effective N is completed-row vs. error count, and the search denominator is the
+experiment list (§6), not what anyone remembers trying; clean smoke tests and partial arms before
+counting or they inflate it.
 
 Re-run fields should be readable straight out of **experiment metadata**, because the experiment
 design put them there. If they are missing, the report cannot honestly claim reproducibility — say
 so as a limitation rather than reconstructing from memory.
-
-The search denominator lives in the experiment list: count arms from **separate sweep experiments**,
-not from what anyone remembers trying, and clean smoke tests and partial arms first or they inflate
-the count. If nothing is marked **confirmatory**, every number is exploratory. Take effective N
-from **completed-row vs. error count**, not the summary line.
 
 Link the experiment or comparison view rather than pasting a screenshot — a permalink carries the
 versions, metadata, and item-level data a reader needs to check a claim.

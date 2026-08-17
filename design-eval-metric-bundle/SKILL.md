@@ -60,7 +60,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-**One scorer per metric, consistently named across experiments** — the bundle only works if a
+**One scorer per metric** (`references/platform-mechanics.md` §5) — the bundle only works if a
 regression in one dimension is visible as its own column. Scores in native `scores` (0–1),
 tokens/latency/cost in **native metrics** so cost and quality stay separable. Guardrails become
 **experiment-level regression gates**, not charts someone reads; a guardrail in a chart gets

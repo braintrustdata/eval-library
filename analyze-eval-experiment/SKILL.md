@@ -64,17 +64,12 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Braintrust
 
-Two platform facts cause most phantom findings, and both look like data problems: **check
-completed-row count against error count** rather than trusting the summary line, and follow the
-**1,000-row pagination cursor**, caching locally before analyzing — a truncated pull is
-indistinguishable from a missing stratum. Re-fetching makes each analysis pass a fresh
-reliability risk, so pull once and work off the cache. Bulk reads get throttled too.
+Shared mechanics: `references/platform-mechanics.md`. Three are load-bearing here, in this
+order. The **read-safety checks (§2) run before any average** — this skill's first step *is*
+effective-N reconciliation, and a truncated pull looks exactly like a missing stratum.
+**Pairing (§3)** decides whether step 4 is available at all. **§8** covers every statistic this
+skill asks for that the platform will not compute: κ, clustered SEs, heatmaps.
 
-Use **cross-experiment diffs on the same dataset version** for item-paired comparisons; if arms
-were not pinned to one version you cannot pair retroactively — fall back to unpaired and note the
-limitation. **Group by `metadata`** for subgroups; a stratum never written to metadata cannot be
-sliced now, and that is an instrumentation finding worth reporting rather than silently omitting.
-
-Sweep arms kept as **separate experiments** are what make the search denominator recoverable. If
-nothing is marked confirmatory, everything is exploratory. Compute κ, clustered SEs, and heatmaps
-in **custom columns or an exported notebook** — none are native.
+Subgroup slices come from grouping by `metadata`. Where a stratum was never written, report the
+gap as an instrumentation finding rather than quietly dropping the slice — it is the one analysis
+limitation with no retroactive fix.

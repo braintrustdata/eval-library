@@ -63,9 +63,9 @@ Each signal must be locatable in a span. Signals about **what the agent did** co
 tool-call spans, so they exist only if the agent is instrumented at that granularity. Signals
 about the output come from the top-level span. Signals you want to **slice by** are `metadata`,
 not evidence — do not conflate them: evidence is what you score, metadata is how you group
-scores. **One signal, one scorer** with a stable name, so the multi-proxy requirement shows up
-as multiple columns; two signals in one scorer breaks the gaming-path analysis because you can
-no longer see which proxy moved. A `Not yet measurable` blind spot vanishes once numbers start
+scores. **One signal, one scorer** (`references/platform-mechanics.md` §5), so the multi-proxy
+requirement shows up as multiple columns; two signals in one scorer breaks the gaming-path
+analysis because you can no longer see which proxy moved. A `Not yet measurable` blind spot vanishes once numbers start
 appearing — record it in the dataset or experiment description, and where it matters to a gate,
 prefer a documented unimplemented placeholder over omitting the dimension and letting its
 absence read as a pass.

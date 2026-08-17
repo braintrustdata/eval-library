@@ -48,8 +48,8 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
   approval for trend monitoring.
 - Do not set 100% sampling without explicit approval; sampling rate is the primary cost control.
 - Do not resubmit a rewind to check on it. Resubmission is not a progress query.
-- Do not rename an evaluator across deployments. The name is the join key for every
-  cross-experiment and offline-to-online comparison.
+- Do not rename an evaluator across deployments (`references/platform-mechanics.md` §5) — the
+  name is the join key for every cross-experiment and offline-to-online comparison.
 - Do not report a preliminary backfill aggregate without saying it is preliminary.
 
 ## Check

@@ -68,17 +68,13 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 results — the cheapest integrity control available. Mark the confirmatory run explicitly in its
 **name and description**.
 
-Encode each arm as an experiment **pinned to the same dataset version** (this is what makes
-cross-arm diffs item-paired, and why pairing must be decided before running). Record independent
-variables in **experiment metadata**: model string, decoding params, prompt/scorer versions,
-serving path, tool manifest. Keep sweep arms as **separate experiments**, losers included, so the
-search denominator survives.
+This is the stage that has to get the shared mechanics right, because they are decided here and
+cannot be repaired afterwards. From `references/platform-mechanics.md`: **§3 pinning**, since
+pairing must be chosen before running and cannot be applied retroactively; **§4 metadata** for
+every independent variable, serving path and tool manifest included, and every control named in
+step 2; **§5 naming**, or the arms never line up; **§6 separate sweep experiments**, losers kept,
+so the denominator survives to the report; **§7 hygiene** for concurrency and smoke-test
+deletion.
 
-Name experiments with the variable under test as a **prefix**: `v2_model-a`, `v2_model-b` groups
-into readable blocks; `model-a_v2`, `model-b_v2` scatters alphabetically. Braintrust groups and
-auto-diffs by name, so **prefix order determines whether arms line up at all**.
-
-Run integrity: `maxConcurrency` from an **environment variable** so one fragile provider can be
-throttled alone; **delete** smoke-test and partially-errored experiments
-(`DELETE /v1/experiment/{id}`) so they never get read as arms; plan for **1,000-row pagination**
-and cache locally before analyzing.
+Each of those is cheap now and impossible later. That asymmetry is the whole argument for
+designing the experiment before running it.
