@@ -94,3 +94,8 @@ Instrument choice, when the request is "label our traffic somehow":
 - **Card format.** Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` — plus a `Braintrust` section carrying the platform mechanics for that stage. It is compact procedural memory, retrieved on demand.
 - **Numbers live in `references/`.** Cards carry the procedure; thresholds carry their hedge and provenance in the reference file. A number that *is* the method (rule of three, K ≥ 3 runs, ≥ 2 raters) stays in the card; tunable defaults (κ floors, item counts, gate thresholds) do not.
 - **Provenance tags.** Empirical claims in `references/` carry `[guide §N]`, `[guide §N → source]` where the guide is paraphrasing, or `[pending]` where a claim is not yet in published prose and should be re-checked before external use. Platform mechanics — tool names, argument shapes, product defaults — carry `[platform]`. They are not empirical claims and have no guide section, but they go stale the same way, so re-check them against the shipped tool surface before relying on one externally.
+Each skill is a directory containing a `SKILL.md` (and any supporting `references/` or `scripts/`). Drop a skill directory into `~/.claude/skills/` to use it.
+
+## Examples
+
+- **[rag-only-enforcement](rag-only-enforcement/)** — A runnable end-to-end eval (not a skill): does behavior-based scoring catch what `test_passed` misses when a coding agent is given a "locate code via vector search only" rule? Four enforcement variants over SWE-bench Django tasks, with output and behavior scorers side by side.

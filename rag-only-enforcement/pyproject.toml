@@ -1,0 +1,21 @@
+[project]
+name = "rag-only-enforcement-eval"
+version = "0.1.0"
+description = "Behavior-vs-output scoring eval: does a coding agent obey a RAG-only rule, and can behavior scoring catch what test_passed misses?"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.77.0",
+    "braintrust>=0.5.3",
+    "chromadb>=1.4.1",
+    "click>=8.3.1",
+    "numpy>=1.24.0",
+    "openai>=2.16.0",
+    "python-dotenv>=1.2.1",
+    "tqdm>=4.66.0",
+]
+
+[tool.ruff]
+line-length = 100
+[tool.ruff.lint]
+ignore = ["E402"]

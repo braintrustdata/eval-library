@@ -1,0 +1,71 @@
+{
+  "permissions": {
+    "deny": [
+      "Terminal(ls)",
+      "Terminal(ls -la)",
+      "Terminal(ls -l)",
+      "Terminal(ls -R)",
+      "Terminal(cd)",
+      "Terminal(find)",
+      "Terminal(grep)",
+      "Terminal(grep -r)",
+      "Terminal(grep -l)",
+      "Terminal(cat)",
+      "Terminal(head)",
+      "Terminal(tail)",
+      "Terminal(pwd)",
+      "Bash(ls)",
+      "Bash(ls -la)",
+      "Bash(ls -l)",
+      "Bash(ls -R)",
+      "Bash(cd)",
+      "Bash(find)",
+      "Bash(grep)",
+      "Bash(grep -r)",
+      "Bash(grep -l)",
+      "Bash(cat)",
+      "Bash(head)",
+      "Bash(tail)",
+      "Bash(pwd)"
+    ]
+  },
+  "sandboxing": {
+    "restrictShellCommands": true,
+    "allowedCommands": [
+      "uv",
+      "python",
+      "python3",
+      "node",
+      "npm",
+      "go",
+      "git",
+      "cargo",
+      "make",
+      "vim",
+      "nano",
+      "tree",
+      "wc",
+      "sort",
+      "uniq",
+      "sed",
+      "awk",
+      "tr",
+      "cut",
+      "xargs"
+    ]
+  },
+  "enforceVectorSearch": {
+    "enabled": true,
+    "blockedPatterns": [
+      "exploration",
+      "find.*files",
+      "search.*code",
+      "list.*directory"
+    ],
+    "requireVectorSearchFor": [
+      "code_discovery",
+      "file_location",
+      "pattern_matching"
+    ]
+  }
+}
