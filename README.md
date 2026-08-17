@@ -53,95 +53,22 @@ mechanics live.
 
 ---
 
-## The skills
+## What's covered
 
-All under [skills/](skills/). Directory mechanics and the contributor workflow are in
-[skills/README.md](skills/README.md).
+Twenty-four skills, grouped by lifecycle stage. Full catalog with descriptions, plus the
+routing tables for choosing between them, in **[skills/README.md](skills/README.md)**.
 
-### Workflow
-
-Interactive and end-to-end. Orchestrates a whole job and hands off to the artifact skills below.
-
-- **[braintrust-eval](skills/braintrust-eval/)** — Execute an eval against a live project: credentials, dataset import, task and scorer code, smoke gates, quota preflight, agentic tracing. The runbook.
-
-### Foundation
-
-- **[braintrust-plan-agent-eval](skills/braintrust-plan-agent-eval/)** — Turn an ambiguous eval request into a staged plan: identify the product decision, inventory what exists, name the earliest missing artifact.
-- **[braintrust-design-eval-instrumentation](skills/braintrust-design-eval-instrumentation/)** — Design the trace and dataset schema and wire the system to emit it: spans, native scores and metrics, metadata, attachments, resolved config, per-item status.
-- **[braintrust-write-agent-behavior-spec](skills/braintrust-write-agent-behavior-spec/)** — Define recurring agent conduct as a versioned `BEHAVIOR.md`: intent, applicability, evidence, decision, execution, recovery, failure modes.
-
-### What to measure
-
-- **[braintrust-define-eval-objective](skills/braintrust-define-eval-objective/)** — Work backward from a product decision to the construct, population, intended claim, and the verification-vs-validation questions.
-- **[braintrust-design-eval-metric-bundle](skills/braintrust-design-eval-metric-bundle/)** — Separate quality, safety, reliability, latency, and cost measures; distinguish improvement targets from guardrails; expose Goodhart risk.
-- **[braintrust-map-eval-evidence](skills/braintrust-map-eval-evidence/)** — Connect constructs to observable success and failure signals, with each proxy's limitation and gaming path named.
-
-### Human knowledge
-
-- **[braintrust-elicit-eval-criteria](skills/braintrust-elicit-eval-criteria/)** — Extract criteria from domain experts and real user desires before labeling begins: construct facets, anchored exemplars, adversarial traps.
-- **[braintrust-design-human-eval-review](skills/braintrust-design-human-eval-review/)** — Design the review workflow and golden dataset: case selection, rater assignment, rationales, inter-rater agreement, adjudication.
-
-### Datasets
-
-- **[braintrust-build-eval-dataset](skills/braintrust-build-eval-dataset/)** — Population definition, case sourcing, stratified sampling, label audits, open-ended constraints, splits, contamination controls, refresh policy.
-- **[braintrust-size-eval-dataset](skills/braintrust-size-eval-dataset/)** — Sample sizes, minimum detectable effects, clustering design effects, and clean-trial counts for bounding rare failures.
-
-### Scorers
-
-- **[braintrust-write-eval-scorer](skills/braintrust-write-eval-scorer/)** — Implement one narrow scorer: match method to evidence and stakes, anchor rubrics with examples, handle refusals, timeouts, and parse failures.
-- **[braintrust-validate-eval-scorer](skills/braintrust-validate-eval-scorer/)** — Validate a scorer against expert labels: agreement with uncertainty, severity-weighted confusion, shortcut probes, and a fitness verdict for gating.
-- **[braintrust-deploy-evaluator](skills/braintrust-deploy-evaluator/)** — Put a validated scorer or classifier on real traffic: input scope, inline testing before saving, online-scoring rules, activation, backfill with a cost estimate.
-
-### Experiments
-
-- **[braintrust-design-eval-experiment](skills/braintrust-design-eval-experiment/)** — Pre-specify a comparison: hypothesis with a minimum effect, named variables including serving path and tool surface, pairing, and a pre-analysis plan.
-- **[braintrust-analyze-eval-experiment](skills/braintrust-analyze-eval-experiment/)** — Analyze completed results: run-integrity audit, intervals, clustering, paired differences, multiplicity, subgroups, fragility.
-- **[braintrust-attribute-multi-variable-change](skills/braintrust-attribute-multi-variable-change/)** — Attribute a change when several things moved at once: difference inventory, isolation designs, honest bundle-vs-component claims.
-- **[braintrust-define-eval-release-gate](skills/braintrust-define-eval-release-gate/)** — Combine magnitude, significance, consistency, stability, reliability, safety bounds, latency, and cost into an explicit ship-or-hold policy.
-
-### Diagnostics and discovery
-
-- **[braintrust-probe-capability-and-variability](skills/braintrust-probe-capability-and-variability/)** — Run the same dataset under variants to measure either the ceiling of what a system can do (`pass@k`) or the spread of how reliably it does it (`pass^k`).
-- **[braintrust-discover-agent-failures](skills/braintrust-discover-agent-failures/)** — Open-ended search for unanticipated failure modes, clustered and triaged into a root-cause taxonomy and frozen regression items.
-- **[braintrust-discover-trace-topics](skills/braintrust-discover-trace-topics/)** — Build the clustering instrument: preprocessor, facet prompt, no-match policy, and the automation that discovers a label set from traffic when none exists yet.
-- **[braintrust-red-team-agent](skills/braintrust-red-team-agent/)** — Adversarial testing against an explicit threat model, prioritizing attack-family coverage over raw success rate, producing existence claims and mitigations.
-
-### Reporting and production
-
-- **[braintrust-report-eval-results](skills/braintrust-report-eval-results/)** — Turn analysis into a report with claims calibrated to the evidence: intervals, effective n, search disclosure, pinned configuration.
-- **[braintrust-monitor-production-evals](skills/braintrust-monitor-production-evals/)** — Online scoring coverage, alert ownership, drift on both input and scorer, and the pipeline from production failure back into the dataset.
-
----
-
-## Routing
-
-The artifact named in a request is the strongest signal. When a request names a dataset,
-scorer, experiment, gate, or report, use that artifact's skill rather than
-`braintrust-plan-agent-eval`.
-
-Four regimes are easy to confuse, and mislabeling which one you are in is the most common
-eval-reporting error:
-
-| Regime | Statistic | Skill |
-| --- | --- | --- |
-| Capability elicitation | max over attempts (`pass@k`) | `braintrust-probe-capability-and-variability` |
-| Variability probing | distribution, worst case (`pass^k`) | `braintrust-probe-capability-and-variability` |
-| Failure discovery | an enumeration | `braintrust-discover-agent-failures` |
-| Red teaming | existence of a breaking input | `braintrust-red-team-agent` |
-
-`braintrust-discover-trace-topics` and `braintrust-discover-agent-failures` both say
-"discover" and are not the same job. Topics builds the **instrument** that turns
-unlabeled traffic into clusters; failure discovery is the **investigation** that turns
-candidates into a root-cause taxonomy and frozen regression items. Topics is usually a
-step inside failure discovery, not a substitute for it.
-
-Instrument choice, when the request is "label our traffic somehow":
-
-| The label set is | Instrument | Skill |
-| --- | --- | --- |
-| Known and stable | classifier | `braintrust-write-eval-scorer` → `braintrust-deploy-evaluator` |
-| A 0–1 criterion | scorer | `braintrust-write-eval-scorer` → `braintrust-validate-eval-scorer` |
-| Not known yet | facet + clustering | `braintrust-discover-trace-topics` |
+| Stage | Covers |
+| --- | --- |
+| **Workflow** | Running an eval end to end against a live project |
+| **Foundation** | Planning, trace instrumentation, behavior specs |
+| **What to measure** | Objectives, metric bundles, evidence maps |
+| **Human knowledge** | Eliciting criteria from experts, review workflows and golden sets |
+| **Datasets** | Sourcing, sampling, label audits, splits, sizing and power |
+| **Scorers** | Writing one, validating it against humans, deploying it to live traffic |
+| **Experiments** | Design, analysis, multi-variable attribution, release gates |
+| **Diagnostics** | Capability and variability probes, failure discovery, topics, red teaming |
+| **Reporting** | Calibrated writeups, production monitoring |
 
 ## Examples
 
