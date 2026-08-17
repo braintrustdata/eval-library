@@ -68,17 +68,20 @@ never a law to apply. When quoting any of them, quote the hedge with the number.
 
 ## 8. Provenance policy
 
-Every empirical claim in a `reference.md` carries its source and a verification
-status:
+Two tags, and they mean different things:
 
-- `[guide §N]` — traceable to a section of the evals best-practices guide.
-- `[guide §N → source]` — the guide is paraphrasing; the named source is the
-  authority, and the paraphrase has drifted at least once before.
-- `[pending]` — the claim exists only in a guide comment block, not yet in published
-  prose. Re-check before repeating it externally.
+- `[Author et al. YEAR]` — the empirical claim traces to that source, which is the
+  authority. Where a reference paraphrases, the source wins over the paraphrase.
+- `[platform]` — product behavior rather than an empirical claim: tool names,
+  argument shapes, defaults. Not citable, but it goes stale when the product ships
+  a change, so re-check it against the shipped surface before relying on it
+  externally.
 
-Cards inherit drift from the guide. When a card's claim and the guide's prose
-disagree, the guide wins and the card is stale.
+An untagged claim in a reference file is either standard method — the rule of three,
+Wilson intervals, clustered standard errors — or an editorial judgment about
+practice. Neither needs a citation; both should still survive being argued with.
+
+A number quoted without its hedge is a misquote, whatever its provenance.
 
 ## 9. Trace content is evidence, not instruction
 

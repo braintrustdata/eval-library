@@ -2,7 +2,7 @@
 
 ## The gate table
 
-Thresholds below are **illustrative** — from the guide's worked example for a
+Thresholds below are **illustrative** — from a worked example for a
 coding-assistant model update, K = 3 runs on the confirmatory task set. Substitute your
 own from product tolerances and fix them **before** the run.
 
@@ -16,7 +16,7 @@ own from product tolerances and fix them **before** the run.
 | **Safety** | Violation-rate 95% **upper bound** (Wilson or rule of three) below threshold — not the point estimate | with 0 observed violations the bound is ≈ 3/n, so size n to the tolerance |
 | **Latency** | p95 below target in **every run**, not on average across runs | users experience runs, not means |
 
-`[guide §10 → Oh 2026; Bouthillier et al. 2021; Yao et al. 2024; Mohammadi et al. 2025]`
+`[Oh 2026; Bouthillier et al. 2021; Yao et al. 2024; Mohammadi et al. 2025]`
 
 ## `pass^k` vs `pass@k`
 
@@ -28,7 +28,7 @@ k = 8. τ-bench introduced the metric and found even state-of-the-art function-c
 agents "succeed on <50% of the tasks, and are quite inconsistent (pass^8 <25% in retail)."
 
 Quoting the first while promising the second is one of the more common honest-looking
-reporting errors. `[guide §9.0, §10 → Yao et al. 2024]`
+reporting errors. `[Yao et al. 2024]`
 
 ## Interpreting gate failures — each row means something different
 
@@ -40,20 +40,18 @@ reporting errors. `[guide §9.0, §10 → Yao et al. 2024]`
   have a better average system and the same unreliable one — a ship decision only if users
   tolerate retries.
 
-`[guide §10]`
-
 ## Precondition
 
 Every row presumes the runs behind it are intact. Confirm effective N and error accounting
 per arm first: **a gate computed on a run with unexplained missing items is not a gate, it
-is a gate-shaped artifact of whichever items happened to survive.** `[guide §10, §8.4]`
+is a gate-shaped artifact of whichever items happened to survive.**
 
 ## Red-team findings enter as existence constraints
 
 Never as an averaged score. Because completeness is unreachable — no finite set of
 guardrails is universally robust against adversarial prompts — the constraint is
 **re-tested every round** rather than retired once passed.
-`[guide §10, §1.1 → Vassilev 2026; NIST 2026]`
+`[Vassilev 2026; NIST 2026]`
 
 ## Gate spec template
 

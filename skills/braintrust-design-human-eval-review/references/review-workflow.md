@@ -10,33 +10,32 @@ set is used to calibrate anything.
 
 "~100" is a floor for a first reference set, not a target for a mature one, and it
 assumes the set spans clear successes, clear failures, and ambiguous edge cases rather
-than 100 easy items. `[guide §6.1, §7.1]`
+than 100 easy items.
 
 ## Provenance
 
 - Humans decide what "good" means; automation applies that decision at scale.
-  `[guide §6]`
 - The practical pattern: domain experts review real traces, score against explicit
   criteria, attach short notes on what succeeded or failed. Those reviewed traces become
   the reusable reference set for prompt comparisons, regression tests, release gates, and
-  scorer development. `[guide §6.1]`
+  scorer development.
 - Build the set **construct-first** — decide what you are measuring, then choose items
-  that discriminate on it. `[guide §7.1 → Casabianca 2025]`
+  that discriminate on it. `[Casabianca 2025]`
 - Direct human attention to ambiguous examples, high-risk domains, newly changed
   behavior, and cases where automated scorers disagree. The aim is not annotation volume.
-  `[guide §6.3 → Lazaros et al. 2026]`
+  `[Lazaros et al. 2026]`
 - Double-label a calibration sample, report κ or α, adjudicate — **the adjudication
-  discussions are where your rubric gets sharp**. `[guide §4.4]`
-- Record provenance per item: who labeled it, from what source, when. `[guide §4.4]`
+  discussions are where your rubric gets sharp**.
+- Record provenance per item: who labeled it, from what source, when.
 - Majority voting beats individuals substantially on ground-truth categorical validation,
   with accuracy-weighted voting strongest — but this is *human* crowds on categorical
   tasks, gains vanish under ceiling effects, and weighting barely beat unweighted
   majority in simulation. Groupthink caveat: raters must reach independent judgments
-  before conferring. `[pending — guide §5.4 comment, Siu et al. 2025]`
+  before conferring.
 - Psychometrics upgrade: define the construct, decompose into facets, score criteria
   reflecting those facets consistently across cases, as validated scales do for latent
-  properties like trust. `[guide §6.3 → Wang et al. 2026; Ueno et al. 2022]`
-- Refresh the golden set as the product changes. `[guide §6.2]`
+  properties like trust. `[Wang et al. 2026; Ueno et al. 2022]`
+- Refresh the golden set as the product changes.
 
 ## Case-selection plan
 

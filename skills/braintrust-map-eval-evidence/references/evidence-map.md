@@ -12,8 +12,6 @@ limitation named for your product.
 | Safety | avoiding prohibited actions, policy violations, exposed secrets, insecure code |
 | Efficiency | latency, token usage, number of tool calls, cost |
 
-`[guide §3.1]`
-
 ## The four questions
 
 For each outcome:
@@ -23,28 +21,26 @@ For each outcome:
 3. Which parts of the outcome does this proxy capture? Which does it miss?
 4. Could the system improve this proxy without improving the outcome users care about?
 
-`[guide §3.1]`
-
 ## Provenance
 
 - A proxy is **evidence of** a property, not the property itself. Passing tests is
   evidence a change is correct but does not guarantee it addresses the request, avoids
-  unnecessary modifications, or remains maintainable. `[guide §3.1]`
+  unnecessary modifications, or remains maintainable.
 - A useful proxy is closely connected to the outcome, covers its most important
   dimensions, and is **difficult to improve without improving real product
-  behavior** — the Goodhart test. `[guide §3.1 → Skalse et al. 2022]`
+  behavior** — the Goodhart test. `[Skalse et al. 2022]`
 - Most important outcomes require more than one proxy; several make it harder to win
-  the eval without improving the product. `[guide §3.1]`
+  the eval without improving the product.
 - Separating **outcome** (did the task get done) from **process-level capability**
   (tool use, planning, memory, coordination) is structural: a single task-success
   number tells you *whether* the system worked, never *which* mechanism carried or
-  broke it. `[guide §2 preamble → Mohammadi et al. 2025]`
+  broke it. `[Mohammadi et al. 2025]`
 - Capability-by-capability coverage matrices, plus negative and perturbation tests, as
   the model for enumerating what a construct implies.
-  `[guide §4.3 → Ribeiro et al. 2020]`
+  `[Ribeiro et al. 2020]`
 - Expect most agent failures to be **silent** — plausible-looking but unusable output
   that raises no error. You can only observe what was logged.
-  `[guide §4.8.3 → Ma et al. 2026]`
+  `[Ma et al. 2026]`
 
 ## Evidence map template
 

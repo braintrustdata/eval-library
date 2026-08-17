@@ -4,26 +4,25 @@
 
 - Construct-first rubric design: decompose the construct into facets and score each
   consistently, the way validated scales measure latent properties.
-  `[guide §6.3 → Wang et al. 2026; Truong & Koyejo 2026 ch. 5]`
+  `[Wang et al. 2026; Truong & Koyejo 2026 ch. 5]`
 - Push human expertise **upstream** into reusable evaluation intelligence before
   testing begins — domain context, adversarial traps, juror personas, scoring
   guidance, audit rules — so a harness applies human-designed structure across runs
   instead of experts rescoring each interaction.
-  `[guide §6.3 → Bousetouane 2026]`
+  `[Bousetouane 2026]`
 - The transferable claim, independent of any framework: **human insight scales when
   captured in rubrics, exemplars, scenarios, and review rules — not when recreated
-  manually per run.** `[guide §6.3]`
+  manually per run.**
 - Direct human attention to ambiguous examples, high-risk domains, newly changed
   behavior, and cases where automated scorers disagree — volume is not the aim.
-  `[guide §6.3 → Lazaros et al. 2026]`
+  `[Lazaros et al. 2026]`
 - Rubrics work as **anchored examples, not descriptions**: a few explicit criteria,
   each scored separately, each anchored with examples of what earns each score.
-  Never a single vague quality score. `[guide §5.3 → Zheng et al. 2023]`
+  Never a single vague quality score. `[Zheng et al. 2023]`
 - Adjudication discussion is where the rubric gets sharp — the disagreements are the
-  product, not the noise. `[guide §4.4]`
+  product, not the noise.
 - Independent judgment before conferring: a panel that defers to whoever speaks
-  first discards the benefit of having a panel. `[pending — guide §5.4 comment,
-  Siu et al. 2025]`
+  first discards the benefit of having a panel.
 
 ## Elicitation interview shape
 

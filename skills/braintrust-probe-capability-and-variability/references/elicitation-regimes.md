@@ -12,13 +12,13 @@ error is mislabeling which one you are in**.
 | Variability probing | the **spread** under equivalent conditions | distribution, worst case (`pass^k`) | "*reliably* does X" |
 
 The other two regimes are out of scope here: open-ended failure discovery, and adversarial red
-teaming against a threat model. Both have different stopping conditions. `[guide §4.8]`
+teaming against a threat model. Both have different stopping conditions.
 
 ## Capability: a score is a floor, not a ceiling
 
 An eval score is a **lower bound**. It says "the system did at least this well under this
 setup," never "this is the most it can do." A low score is ambiguous between *cannot* and
-*did not*. `[guide §4.8.1]`
+*did not*.
 
 ### The elicitation ladder
 
@@ -35,14 +35,14 @@ setup," never "this is the most it can do." A low score is ambiguous between *ca
 - **Password-locked models:** a few high-quality demonstrations often fully elicit a hidden
   capability; fine-tuning generalizes across locks; and "when only evaluations, and not
   demonstrations, are available, approaches like reinforcement learning are still often able
-  to elicit capabilities." `[guide §4.8.1 → Greenblatt et al. 2024]`
+  to elicit capabilities." `[Greenblatt et al. 2024]`
 - **Sandbagging:** models can be prompted or password-locked to selectively underperform,
-  even to a target score. `[guide §4.8.1 → van der Weij et al. 2024]`
+  even to a target score. `[van der Weij et al. 2024]`
 - **Method matters by task:** prompting recovers capability on multiple-choice QA (steering
   does not), while **only fine-tuning** does for code generation — so one failed attempt
-  establishes nothing about absence. `[guide §4.8.1 → Hofstätter et al. 2025]`
+  establishes nothing about absence. `[Hofstätter et al. 2025]`
 - Decoupling LLM capability from harness design is an independent recommendation of the
-  agent-eval surveys. `[guide §1, §2.2 → Yehudai et al. 2025]`
+  agent-eval surveys. `[Yehudai et al. 2025]`
 
 ### Construct-drift check
 
@@ -54,27 +54,25 @@ the score** — a scaffold that can see the score has turned the eval into train
 ### Containment
 
 If a rung surfaces capability dangerous to publish or leave accessible, stop climbing and
-escalate. The finding is the deliverable. `[guide §4.8.1]`
+escalate. The finding is the deliverable.
 
 ## Variability: make the spread the measurement
 
 Elsewhere run-to-run variance is noise to average over. Here **the variance is the result** —
 vary the eval surface deliberately and report the distribution as a first-class number.
-`[guide §4.8.2]`
 
 - **Prompt formatting alone can swing accuracy by double digits**, so a single-prompt ranking
-  is a prompt lottery rather than a finding. `[guide §4.8.2 → Sclar et al. 2024]`
+  is a prompt lottery rather than a finding. `[Sclar et al. 2024]`
 - Multi-prompt evaluation is the corrective — 6.5M-instance analysis across 20 LLMs, 39
-  tasks. `[guide §4.8.2 → Mizrahi et al. 2024]`
+  tasks. `[Mizrahi et al. 2024]`
 - Design variants as **equivalence classes** (one scenario, several surface forms), which is
   exactly the scenario-by-variant clustering requiring clustered standard errors.
-  `[guide §4.8.2, §9.1]`
 - Hosted "deterministic" settings are not: up to **15%** accuracy variation across runs of the
-  same configuration, best-to-worst gap up to **70%**. `[guide §9.0 → Atıl et al. 2025]`
+  same configuration, best-to-worst gap up to **70%**. `[Atıl et al. 2025]`
 - Root causes: competing logits flipped by numerical noise, amplified by BF16 precision, batch
-  size, GPU count, hardware. `[guide §9.0 → Yuan et al. 2025]`
+  size, GPU count, hardware. `[Yuan et al. 2025]`
 - Two systems can share an average while differing in reliability; leaderboard gains often
-  fail reliability criteria across runs and datasets. `[guide §9.4 → Oh 2026]`
+  fail reliability criteria across runs and datasets. `[Oh 2026]`
 
 ### `pass^k`
 
@@ -82,14 +80,14 @@ Probability that **all** k i.i.d. trials succeed, averaged over tasks — the re
 counterpart to `pass@k`'s "any of k." Under independence `pass^k` = p^k, so 90% per attempt →
 **57% at k = 8**. τ-bench, which introduced it: even state-of-the-art function-calling agents
 "succeed on <50% of the tasks, and are quite inconsistent (pass^8 <25% in retail)."
-`[guide §9.0, §4.8.2 → Yao et al. 2024]`
+`[Yao et al. 2024]`
 
 ### Agreement over repeats
 
 - **TARr@N** — on the raw output.
 - **TARa@N** — on the parsed-out answer. **Usually the one you want for scored evals.**
 
-`[guide §9.0 → Atıl et al. 2025]`
+`[Atıl et al. 2025]`
 
 ## Variant matrix template
 

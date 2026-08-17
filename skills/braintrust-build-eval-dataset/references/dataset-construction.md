@@ -19,8 +19,6 @@
    pipeline before trusting custom results), external anchoring, and gap mapping. In
    all four: a benchmark measures *its* construct, not yours.
 
-`[guide §4.2]`
-
 ## Label quality
 
 - Record **provenance** per item: who labeled it, from what source, when.
@@ -38,18 +36,18 @@ Three systematic patterns to check by name in any inherited corpus:
   made them.
 - Crowd-sourced labels range from usable to unusable — audit a sample up front.
 
-`[guide §4.4 → Northcutt et al. 2021]`
+`[Northcutt et al. 2021]`
 
 **Free label audit from a multi-system comparison:** compute how closely each system
 agrees with the reference, and how closely systems agree with *each other*. Items where
 systems converge tightly among themselves while all diverging from the reference are
 where the reference is most likely wrong. Confirm by hand; a failure mode shared by all
-arms produces the same signature. `[guide §4.4]`
+arms produces the same signature.
 
 **Engineer one stratum true by construction:** items whose expected output you authored
 first and then rendered into the input format, so ground truth is known exactly. That
 stratum is the calibration anchor. Keep it small, mark it synthetic, never let its
-numbers stand in for the population. `[guide §4.4]`
+numbers stand in for the population.
 
 ## Open-ended `expected`, in increasing order of openness
 
@@ -61,7 +59,7 @@ numbers stand in for the population. `[guide §4.4]`
 | Pairwise preference | head-to-head, Bradley–Terry | counterbalance order for position bias |
 
 Reference-overlap metrics correlate poorly with human judgment on open-ended
-generation. `[guide §4.5 → Novikova et al. 2017; Ribeiro et al. 2020; Zheng et al.
+generation. `[Novikova et al. 2017; Ribeiro et al. 2020; Zheng et al.
 2023; Chiang et al. 2024]`
 
 ## Leakage controls, not guarantees
@@ -85,7 +83,7 @@ Caveat: a drop on perturbed items only implies memorization if task complexity w
 constant. Side effect: perturbation breaks prompt-cache reuse, so those rows double as
 a serving-cost stress test.
 
-`[guide §4.7 → Sainz et al. 2023; Braintrust GLM-Opus 2026; pending: White et al. 2024,
+`[Sainz et al. 2023; Braintrust GLM-Opus 2026; pending: White et al. 2024,
 Chen et al. 2025]`
 
 ## Transform-pipeline invariants
@@ -100,7 +98,7 @@ Defense: after every transform, assert an invariant a corrupted item would viola
 **reject** rather than pass through. Order destructive steps last and gentlest,
 spot-check distribution extremes by hand, version the pipeline, and normalize to one
 canonical format at the end so no arm is disadvantaged by a format its provider handles
-badly. `[guide §4.2]`
+badly.
 
 ## Lifecycle
 
@@ -113,7 +111,7 @@ badly. `[guide §4.2]`
 - **Datasheet:** motivation, composition stats, collection process, labeling process and
   agreement, recommended and discouraged uses.
 
-`[guide §4.7 → Gebru et al. 2021; Kiela et al. 2021; Reuel et al. 2024]`
+`[Gebru et al. 2021; Kiela et al. 2021; Reuel et al. 2024]`
 
 ## Iteration budget
 

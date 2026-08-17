@@ -17,18 +17,16 @@ Two corollaries:
   rather than caveating it; the survivors are not a random sample, since whatever killed
   the others correlates with load, input size, or item difficulty.
 
-`[guide §8.4]`
-
 ## Non-determinism baseline
 
 - A single run is one draw from a distribution, not a measurement of a constant.
 - Even temperature 0 with a fixed seed is not deterministic in hosted environments:
   accuracy variation **up to 15%** across runs of the same configuration, and a
   best-to-worst gap up to **70%**. The unit is percent, not percentage points.
-  `[guide §9.0 → Atıl et al. 2025]`
+  `[Atıl et al. 2025]`
 - Root causes are mundane: small gaps between competing logits flipped by numerical noise,
   amplified by BF16 precision, batch size, GPU count, hardware.
-  `[guide §9.0 → Yuan et al. 2025]`
+  `[Yuan et al. 2025]`
 - Agentic systems amplify: one different early token means a different tool call,
   different environment state, different outcome.
 - K = **3–5** floor for gating; K = 1 only for exploratory work, labeled as such.
@@ -39,10 +37,10 @@ Two corollaries:
 **CI on a pass rate.** 150/200 → p = 0.75, SE = √(0.75 × 0.25 / 200) ≈ 3.1 pp, 95% CI ≈
 [69%, 81%]. Any score inside that range is not distinguishable from yours on this eval; a
 competitor's 78% on the same 200 tasks is consistent with no difference. Use **Wilson**
-near 0 or 1 or when n is small. `[guide §9.1]`
+near 0 or 1 or when n is small.
 
 **Rates near zero.** 0 violations in 200 trials does **not** mean 0%. Rule of three: 95%
-upper bound ≈ 3/n = 1.5%. A 0.1% tolerance needs ~3,000 clean trials. `[guide §9.1]`
+upper bound ≈ 3/n = 1.5%. A 0.1% tolerance needs ~3,000 clean trials.
 
 **Two corrections practitioners routinely miss:**
 
@@ -54,7 +52,7 @@ upper bound ≈ 3/n = 1.5%. A 0.1% tolerance needs ~3,000 clean trials. `[guide 
   variance into item and model components, more efficiently than mean-of-scores.
   Generalizability Theory is the general framework — it decomposes error into sources
   (items, runs, judges, prompts) and tells you which the protocol must average over.
-  `[guide §9.1 → NIST AI 800-3 2026; Truong & Koyejo 2026 ch. 5]`
+  `[NIST AI 800-3 2026; Truong & Koyejo 2026 ch. 5]`
 
 **Bootstrap, for anything that is not a proportion** — mean judge score, latency, cost:
 
@@ -70,7 +68,6 @@ def bootstrap_ci(x, n=2000):
 **Paired comparison.** Compare M1 vs. M0 on the same tasks and analyze per-task
 differences; item difficulty cancels and sensitivity improves. Report the paired
 difference with its CI plus wins/losses/ties — never two independent scores side by side.
-`[guide §9.2]`
 
 ```python
 diff = np.array(score_B) - np.array(score_A)   # per-item, same order
@@ -86,7 +83,7 @@ bootstrapping rows that are really scenario variants reproduces the unclustered 
 
 An alternative framing worth knowing: report **P(A > B)** rather than an average
 difference, testing against H₀: P(A>B) = 0.5 with a meaningfulness threshold. The source
-recommends **γ = 0.75** for strong claims. `[guide §9.1, §10 → Bouthillier et al. 2021]`
+recommends **γ = 0.75** for strong claims. `[Bouthillier et al. 2021]`
 
 ## Multiplicity
 
@@ -105,8 +102,6 @@ Practices:
 - Interpretation rule: sweep winner + confirmatory replication = trustworthy; sweep winner
   shipped without confirmation = **an anecdote with a p-value**.
 
-`[guide §9.3]`
-
 ## Beyond averages
 
 - **Variance.** M0 and M1 can both average 85% while one clusters tightly and the other
@@ -115,12 +110,12 @@ Practices:
   base models aligned toward fast-heuristic vs. deliberate reasoning ranked **oppositely**
   depending on benchmark category — System 2-aligned excelled at arithmetic and symbolic,
   System 1-aligned did better on commonsense. An aggregate would have flattened it.
-  `[guide §9.4 → Ziabari et al. 2025]`
+  `[Ziabari et al. 2025]`
 - **Fragility.** Does the conclusion survive dropping the single most favorable task
   category? A cross-domain analysis of ten leaderboards found that in **over half** of
   top-model comparisons at least one implied property of superiority fails. Fragility is
   highest among top-ranked models, and adding more correlated tasks does not fix it.
-  `[guide §9.3, §9.4 → Oh 2026]`
+  `[Oh 2026]`
 - Synthetic suites and in-the-wild production tasks will often rank systems differently —
   that disagreement is signal, not noise.
 

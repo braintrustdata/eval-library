@@ -36,7 +36,7 @@ The bands below assume **tier 1**.
 
 The stated bar: *don't gate releases on a judge below κ ≈ 0.7 against the golden set;
 between 0.4–0.7 it may still be fine for trend monitoring.* Treat these as defaults to
-justify, not laws. `[guide §7.1]`
+justify, not laws.
 
 Agreement alone never licenses gating. A scorer above the bar that misses a severe class
 is still unfit — severity beats average.
@@ -45,12 +45,12 @@ is still unfit — severity beats average.
 
 1. **Build the reference set** — ~100+ traces spanning clear successes, clear failures,
    and ambiguous edge cases, reviewed by ≥2 experts with adjudicated labels, built
-   construct-first. `[guide §7.1 → Casabianca 2025]`
+   construct-first. `[Casabianca 2025]`
 2. **Compare scorer to humans.** Report κ or α, not raw accuracy.
 3. **Examine disagreements by category and severity**, not just overall agreement. A
    scorer confusing "excellent" with "good" may be fine for trend monitoring; one that
    misses harmful outputs or overestimates implementation correctness is unacceptable for
-   gating. `[guide §7.1 → Salaudeen et al. 2025]`
+   gating. `[Salaudeen et al. 2025]`
 4. **Inspect the dangerous cells explicitly** — every case where the scorer said **≥0.8
    and humans said ≤0.3**, and the reverse. These are where a gate would have shipped a
    failure.
@@ -60,11 +60,11 @@ is still unfit — severity beats average.
 6. **Probe for gaming** — does length raise the score independent of quality? Confidence
    independent of correctness? Polish independent of task completion? Does text addressed to the
    evaluator move the score?
-   `[guide §7.1 → Zheng et al. 2023; Skalse et al. 2022; contract §9]`
+   `[Zheng et al. 2023; Skalse et al. 2022; contract §9]`
 7. **Propagate scorer error into headline numbers.** If the judge agrees with humans 85%
    of the time, "92% helpful" carries wider uncertainty than the item-count interval
    implies — report it. Generalizability Theory treats judges as one more variance source
-   to decompose. `[guide §7.1 → Truong & Koyejo 2026 ch. 5]`
+   to decompose. `[Truong & Koyejo 2026 ch. 5]`
 8. **Revalidate** when the product, rubric, model mix, or production distribution
    changes.
 
@@ -74,7 +74,7 @@ Single benchmark numbers hide the underlying demand structure of tasks. Validate
 **pattern of relationships** among the bundle's dimensions, not one aggregate. If a
 prompt change improves helpfulness while degrading safety, or raises correctness only via
 verbosity and latency, that relational pattern **is** the finding.
-`[guide §7.2 → Zhou et al. 2026]`
+`[Zhou et al. 2026]`
 
 Two confusion heatmaps make it concrete:
 
@@ -82,8 +82,6 @@ Two confusion heatmaps make it concrete:
   which distinct human categories the scorer collapses.
 - scorer A × scorer B (e.g. deterministic checker vs. LLM judge) — reveals where they
   capture different aspects of behavior.
-
-`[guide §7.2]`
 
 ## Confusion table template
 
@@ -169,4 +167,4 @@ Three checks, always separate, always deterministic:
 Not to prove a scorer perfect. To establish that, for a specific product context and
 decision, it tracks the distinctions the team cares about, **fails in understood ways**,
 and is robust enough to be useful. That is what turns a convenient score into a
-defensible measurement. `[guide §7.2]`
+defensible measurement.

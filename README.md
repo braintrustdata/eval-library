@@ -174,18 +174,19 @@ defines how every skill handles ambiguity, modes, and uncertainty labelling.
 [skills/PLATFORM.md](skills/PLATFORM.md) holds the Braintrust mechanics common to every
 stage. Both are mirrored into each skill's `references/` so a directory works standalone.
 
-**Provenance tags**, and their honest limits:
+**Two provenance tags**, both checkable:
 
-| Tag | Means | Checkable by you? |
-| --- | --- | --- |
-| `[guide §N → source]` | Paraphrase of a named source; the source is the authority | **Yes** — 106 of these, mostly published papers |
-| `[guide §N]` | Traceable to an internal Braintrust evals guide | **No** — 61 of these; the guide is not published |
-| `[pending]` | Not yet in published prose; re-check before external use | No |
-| `[platform]` | Product behavior — tool names, argument shapes, defaults | Against the shipped tool surface |
+- `[Author et al. YEAR]` — the empirical claim traces to that source, which is the
+  authority. Where a reference paraphrases, the source wins.
+- `[platform]` — product behavior rather than an empirical claim. Not citable, but it goes
+  stale when the product ships a change, so re-check it against the shipped surface before
+  relying on it externally.
 
-Bare `[guide §N]` claims are the ones to treat with most caution if you are quoting this
-material externally. Where a claim matters to a decision, prefer the ones carrying a
-named source.
+An untagged claim is either standard method — the rule of three, Wilson intervals,
+clustered standard errors — or an editorial judgment about practice. Neither needs a
+citation; both should still survive being argued with.
+
+A number quoted without its hedge is a misquote, whatever its provenance.
 
 ## Contributing
 

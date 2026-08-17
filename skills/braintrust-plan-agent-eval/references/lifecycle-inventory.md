@@ -49,15 +49,12 @@ whatever was easy to gather; an experiment run before instrumentation cannot att
 to a module. Recommending a downstream stage while an upstream one is missing produces work that
 has to be redone.
 
-`[guide §2.1, §3.2, §4.1]`
-
 ## The two prerequisites teams skip
 
 - **Instrumentation.** Traces are the behavioral record and everything else consumes them; a thin
   trace caps every downstream measurement, and you cannot retroactively log a field.
-  `[guide §1, §3.2]`
 - **Criteria.** Human judgment defines the target; automation extends it. If nobody can say what
-  "good" means, every scorer downstream encodes a guess. `[guide §6]`
+  "good" means, every scorer downstream encodes a guess.
 
 ## When not to build process
 
@@ -66,10 +63,10 @@ reversible, and recommend the smallest useful step instead — usually a handful
 by a human, with the explicit note that it is not evidence about which option is better.
 
 A cheap smoke run verifies plumbing end to end. It is never evidence about a comparison, and its
-numbers should not be quoted. `[guide §2.5]`
+numbers should not be quoted.
 
 ## Scope of a public benchmark
 
 Four legitimate jobs — cold start, harness calibration, external anchoring, gap mapping. In all
 four, a benchmark measures *its* construct, not yours, so it is never the starting point for a
-product-readiness question. `[guide §4.2]`
+product-readiness question.

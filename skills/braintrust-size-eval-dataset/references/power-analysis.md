@@ -11,22 +11,22 @@ number.
 | Estimate a rate with stated precision | CI width (Wilson near 0/1) | n for target half-width |
 | Bound a rare failure | rule of three | clean trials needed for the tolerance |
 
-`[guide §4.6, §9.1 → Card et al. 2020; Miller 2024]`
+`[Card et al. 2020; Miller 2024]`
 
 ## Anchors
 
 - Detecting a **5 pp improvement on a 75% baseline** needs on the order of **1,100
   items per arm unpaired**. Pairing on the same items cuts this substantially, which is
-  why paired designs are the default for prompt and model comparisons. `[guide §4.6]`
+  why paired designs are the default for prompt and model comparisons.
 - **Clustered items are fewer items than they look.** 200 tasks that are really 40
   scenarios × 5 variants have an effective N closer to **40**. Plan and analyze with
-  cluster-aware standard errors. `[guide §4.6, §9.1 → Miller 2024]`
+  cluster-aware standard errors. `[Miller 2024]`
 - **Near-zero rates need large N.** Zero violations in 200 trials only certifies a rate
   below **~1.5%** (rule of three, 3/n). A **0.1% tolerance needs ~3,000 clean trials**.
-  Do this arithmetic before promising the gate. `[guide §4.6, §9.1 → Miller 2024]`
+  Do this arithmetic before promising the gate. `[Miller 2024]`
 - Most NLP evaluations historically have been **underpowered** — typical test sets are
   too small to reliably detect the 1–2 point differences papers claim.
-  `[guide §4.6 → Card et al. 2020]`
+  `[Card et al. 2020]`
 
 ## Formulas
 
@@ -45,7 +45,7 @@ n = 200 → 1.5%. Tolerance 0.1% → n ≈ 3,000.
 cluster and ρ the intra-cluster correlation. With high ρ and m = 5, effective n
 approaches the cluster count.
 
-`[guide §9.1 → Miller 2024]`
+`[Miller 2024]`
 
 ## Runs, not just items
 
@@ -53,20 +53,20 @@ Two independent variance components: **item sampling** (which items) and **gener
 noise** (which run). Sizing only the first understates uncertainty.
 
 - K = **3–5** runs as the floor for gating decisions; K = 1 only for exploratory work,
-  labeled as such. `[guide §9.0]`
+  labeled as such.
 - Precedent for treating a metric as a distribution: the Phi-4-reasoning report
   approximates AIME accuracy by kernel density estimation over **50 independent runs**,
   because AIME 2025 has only 30 problems and average-of-5 results from two independent
-  runs differed by 5–10 pp. `[guide §9.0 → Abdin et al. 2025]`
+  runs differed by 5–10 pp. `[Abdin et al. 2025]`
 - Hosted "deterministic" settings are not deterministic: accuracy variation **up to
   15%** across runs of the same configuration, best-to-worst gap up to **70%**.
-  `[guide §9.0 → Atıl et al. 2025]`
+  `[Atıl et al. 2025]`
 
 ## Matrix budget
 
 Before the first run, price **items × arms × runs** against every quota, credit balance,
 and metered limit in the path. Metered ceilings fail in the worst available way: partway
-through one arm, leaving a partial result that resembles data. `[guide §4.2, §8.4]`
+through one arm, leaving a partial result that resembles data.
 
 ## Output template
 

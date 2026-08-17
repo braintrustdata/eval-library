@@ -11,7 +11,6 @@
 
 If a control variable matters, it must be a schema field — otherwise you cannot hold it
 constant or slice by it, and confounds enumerated on a whiteboard stay on the whiteboard.
-`[guide §8.2]`
 
 ## Hypothesis shape
 
@@ -20,7 +19,7 @@ constant or slice by it, and confounds enumerated on a whiteboard stay on the wh
 > safety-violation upper bound below 0.5% and p95 latency below 2 s in every run.
 
 Thresholds are illustrative — substitute your own from product tolerances. Note that H1
-**is** the release gate stated in advance; that is the point. `[guide §8.1]`
+**is** the release gate stated in advance; that is the point.
 
 Good hypotheses are directional, specific, tradeoff-aware, and name their constructs,
 proxies, scorers, and population.
@@ -34,8 +33,6 @@ The elicitation regime dictates the hypothesis form and the estimator:
 | Failure discovery | an enumeration | "here is what goes wrong" |
 | Red teaming | existence of a breaking input | "there exists an input that breaks X" |
 
-`[guide §4.8, §8.1]`
-
 ## Confound mitigation, done well
 
 Ziabari et al. noticed System 2 responses in their training data were systematically
@@ -45,7 +42,7 @@ statistical equivalence tests before training**, so downstream differences could
 attributed to reasoning style rather than verbosity.
 
 The full pattern in three steps: **name the confound, intervene, verify the intervention
-actually worked.** `[guide §8.2 → Ziabari et al. 2025]`
+actually worked.** `[Ziabari et al. 2025]`
 
 ## What hides inside a model string
 
@@ -59,11 +56,11 @@ batching:
 ```
 
 Batch size, GPU count, and GPU version all shift generated responses, amplified by BF16
-precision. `[guide §8.2 → Yuan et al. 2025]`
+precision. `[Yuan et al. 2025]`
 
 Under role-based access the tool surface is not fixed even within one deployment; pin the
 manifest (names, schemas, permissions) per arm, because an arm silently lacking a tool
-reads as a capability gap. `[guide §8.2 → Mohammadi et al. 2025]`
+reads as a capability gap. `[Mohammadi et al. 2025]`
 
 ## Two disciplines once runs start
 
@@ -73,7 +70,7 @@ unlike a dataset or scorer version, the discrepancy **leaves no trace in the res
 table**. The choice is binary — restart the whole matrix under the corrected
 configuration, or finish as designed and record the defect as a stated limitation. A
 better configuration discovered mid-run is an input to the next round, not a patch for
-this one. `[guide §8.2]`
+this one.
 
 **Verify the treatment is implementable in every arm.** Suppose the hypothesis is
 "supplying a domain glossary improves extraction accuracy": one vendor takes free-form
@@ -83,7 +80,7 @@ Enumerate the per-arm implementation before running, publish it as a table besid
 results, and exclude arms that cannot receive the treatment from the treatment-effect
 claim rather than recording them as "no benefit." Confirm too that the option you set is
 one the API still reads — renamed and deprecated parameters are usually accepted in
-silence and ignored. `[guide §8.2]`
+silence and ignored.
 
 ## Run integrity, pre-planned
 
@@ -97,8 +94,6 @@ silence and ignored. `[guide §8.2]`
 - **Keep the comparison surface clean:** name every run for the variables it varies,
   most-significant first (`v2_model-a` groups; `model-a_v2` scatters); delete superseded
   runs as you go; pin each run to dataset, prompt, and scorer versions.
-
-`[guide §8.4]`
 
 ## Manifest template
 

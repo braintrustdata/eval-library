@@ -14,11 +14,11 @@ offline experiments gate the release
 ```
 
 Mature engineering fields earned trust exactly this way: pre-deployment gates paired with
-post-deployment monitoring. `[guide §2.4, §10 → Weidinger et al. 2025]`
+post-deployment monitoring. `[Weidinger et al. 2025]`
 
 Because completeness is unreachable — no finite guardrail set is universally robust — the
 recommended posture is continuous monitor-and-update rather than one-and-done
-certification. `[guide §1.1 → Vassilev 2026; NIST 2026]`
+certification. `[Vassilev 2026; NIST 2026]`
 
 ## Sampling plan
 
@@ -38,7 +38,7 @@ oversample_triggers:
 ```
 
 Place human attention on ambiguous examples, high-risk domains, newly changed behavior, and
-scorer disagreements — not on volume. `[guide §6.3 → Lazaros et al. 2026]`
+scorer disagreements — not on volume. `[Lazaros et al. 2026]`
 
 ## Alert specification
 
@@ -67,10 +67,9 @@ An alert with no action is a notification. An alert with no owner is a dashboard
 
 Scorer drift under a provider model update is indistinguishable from a product regression
 without the calibration re-run. Re-validate on a schedule, not on suspicion.
-`[guide §7.1 — revalidate when product, rubric, model mix, or distribution changes]`
 
 Also refresh the golden set as the product changes; a judge only works while it stays
-anchored. `[guide §6.2]`
+anchored.
 
 ## Silent failures
 
@@ -78,7 +77,7 @@ Error-rate dashboards look healthy while these accumulate. One multi-agent study
 **75.17%** of failures were silent semantic failures vs. 24.84% explicit — explicit being
 exceptions 6.38% and timeouts 1.86%. Silent failures "do not trigger explicit system
 failures and are therefore not immediately visible to users."
-`[guide §4.8.3 → Ma et al. 2026]`
+`[Ma et al. 2026]`
 
 Consequence: monitor **quality scorers**, not just exception rates. A dashboard showing only
 errors is monitoring a quarter of the problem.
@@ -99,7 +98,7 @@ retirement:
 ```
 
 Every production incident and user-flagged failure is a free, maximally relevant test item —
-route them in as a standing pipeline. `[guide §4.2, §2.4]`
+route them in as a standing pipeline.
 
 ## Privacy and retention
 
@@ -121,4 +120,4 @@ on it.
 
 A production metric moving does not license a causal claim about a change: an offline A/B on
 the same items supports a causal claim, an observational drift in production metrics does
-not. `[guide §8.1]`
+not.

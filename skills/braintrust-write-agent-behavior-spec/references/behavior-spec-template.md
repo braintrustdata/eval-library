@@ -68,10 +68,8 @@ Every clause must pass this. If it fails, rewrite it.
 Ask: would this clause still be correct after a prompt rewrite, a model swap, or a
 tool rename? If no, it is implementation detail and belongs in the prompt.
 
-`[guide §1 — behavior as a durable property of the system, not the prompt]`
-
 ## Versioning
 
 A behavior change invalidates prior trace reviews the same way a scorer change
 invalidates cross-experiment comparisons. Bump the version, date it, and record what
-changed. `[guide §5.4 — version scorers like code]`
+changed.

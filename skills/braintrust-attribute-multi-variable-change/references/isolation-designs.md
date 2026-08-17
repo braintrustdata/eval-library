@@ -5,29 +5,28 @@
 - **A model string is not a configuration.** Batch size, GPU count, and GPU version
   all shift generated responses, amplified by BF16 precision. Cache state moves
   latency and cost more than most prompt edits.
-  `[guide §8.2 → Yuan et al. 2025 (arXiv:2506.09501); Braintrust GLM-Opus 2026]`
+  `[Yuan et al. 2025 (arXiv:2506.09501); Braintrust GLM-Opus 2026]`
 - **Hosted "deterministic" settings are not deterministic.** Across five API LLMs
   and eight tasks with 10 runs each: accuracy variation **up to 15%** across runs of
   the same configuration, and a gap up to **70%** between best-possible and
   worst-possible performance. The unit is percent, not percentage points.
-  `[guide §9.0 → Atıl et al. 2025]`
+  `[Atıl et al. 2025]`
 - **Verify the treatment is implementable in every arm.** Where vendors differ, one
   independent variable quietly becomes several. Enumerate the per-arm implementation,
   publish it beside the results, and exclude arms that cannot receive the treatment
   from the treatment-effect claim rather than recording them as "no benefit."
-  `[guide §8.2]`
 - **Fix nothing mid-comparison.** A mid-run correction makes arms incomparable and,
   unlike a dataset or scorer version change, leaves **no trace in the results
   table**. Either restart the matrix under the corrected configuration or finish as
-  designed and record the defect as a stated limitation. `[guide §8.2]`
+  designed and record the defect as a stated limitation.
 - Renamed and deprecated API parameters are usually accepted in silence and ignored
   — indistinguishable in results from a treatment that does not work. Log the
-  **resolved** config per item. `[guide §3.2, §8.2]`
+  **resolved** config per item.
 - The agent-eval taxonomies treat serving environment only as a data-collection
   setting ("evaluation contexts": the environment in which an evaluation is
   performed, from controlled simulations to open-world browsers and APIs), not as a
   variable with metrics of its own. Treat it as first-class anyway.
-  `[guide §8.2 → Mohammadi et al. 2025]`
+  `[Mohammadi et al. 2025]`
 
 ## Difference inventory template
 
@@ -62,7 +61,7 @@ dataset_version:
 
 Cost check before committing: items × arms × runs against every quota and credit
 balance in the path. A metered ceiling reached partway through one arm leaves a
-partial result, which is worse than a missing one. `[guide §4.2, §8.4]`
+partial result, which is worse than a missing one.
 
 ## Claim language
 

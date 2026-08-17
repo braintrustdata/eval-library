@@ -36,19 +36,19 @@ a delete call without an explicit confirmation in the turn" is.
    static attack suite goes stale the moment a defense trains on it, so any defense claim
    must be tested against **adaptive** attacks that know the defense — the oldest lesson in
    adversarial ML. Report queries and compute spent alongside ASR.
-   `[guide §4.8.4 → Tramèr et al. 2020]`
+   `[Tramèr et al. 2020]`
 2. **For evaluation, coverage beats raw success rate.** A reward-maximizing attacker
    collapses onto a few high-reward modes and reports impressive ASR with almost no
    diversity; the objective should be diversity-seeking. **Ten variations of one jailbreak
    teach you less than one instance each of ten families.**
-   `[guide §4.8.4 → Samvelyan et al. 2024]`
+   `[Samvelyan et al. 2024]`
 3. **Human and automated red teaming are complementary, not substitutes** — automation for
    volume, humans for the realistic, creative attacks automation misses.
-   `[guide §4.8.4 → Ganguli et al. 2022]`
+   `[Ganguli et al. 2022]`
 4. **Red-team results license existence claims only** ("there is an input that…"), and must
    never be averaged into a product-quality metric. Red teaming is also **not safety-only**:
    no unsupported claims and no unjustified destructive tool calls are exactly the kind of
-   product behaviors worth attacking. `[guide §4.8.4]`
+   product behaviors worth attacking.
 
 ## Methods
 
@@ -61,8 +61,6 @@ a delete call without an explicit confirmation in the turn" is.
 - HarmBench standardized comparison across attacks and defenses.
   `[→ Mazeika et al. 2024]`
 
-`[all guide §4.8.4]`
-
 ## Why completeness is unreachable
 
 A peer-reviewed proof extending the logic of Gödel's incompleteness theorems: **no finite
@@ -74,7 +72,7 @@ no rule-based safety framework achieves complete, contradiction-free coverage.
 The recommended posture is continuous monitor-and-update — constant red-teaming, continuous
 hardening, operational resilience — rather than one-and-done certification.
 
-`[guide §1.1, §4.8.4 → Vassilev 2026; NIST 2026]`
+`[Vassilev 2026; NIST 2026]`
 
 ## Finding template
 

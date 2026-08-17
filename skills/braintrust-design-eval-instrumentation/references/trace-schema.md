@@ -22,7 +22,6 @@
 ```
 
 The `steps` list mirrors the span tree — design them together, not sequentially.
-`[guide §3.2]`
 
 ## The three fields discovered too late
 
@@ -39,8 +38,6 @@ The `steps` list mirrors the span tree — design them together, not sequentiall
    including SDK-filled defaults and parameters the API accepted and ignored. Renamed and
    deprecated options are typically dropped without error.
 
-`[guide §3.2]`
-
 ## Serving-path fields
 
 A model string is not a configuration.
@@ -55,7 +52,7 @@ batching:
 ```
 
 Batch size, GPU count, and GPU version all shift generated responses, amplified by BF16
-precision. `[guide §8.2 → Yuan et al. 2025]`
+precision. `[Yuan et al. 2025]`
 
 ## Tool manifest fields
 
@@ -68,27 +65,26 @@ tools:
 
 Under role-based access, different users see different tool surfaces, so "the agent's tools"
 is not fixed even within one deployment. An arm that silently lacks a tool reads as a
-capability gap. `[guide §8.2 → Mohammadi et al. 2025]`
+capability gap. `[Mohammadi et al. 2025]`
 
 ## Span discipline
 
 - One span per **LLM call, tool call, and scorer call**, full payloads, **correct nesting**.
 - Flat spans cannot localize a cascading failure. Failure attribution depends on this: early
   mistakes cascade, so the module that first erred matters more than the visible symptom.
-  `[guide §4.8.3 → Zhu et al. 2025]`
+  `[Zhu et al. 2025]`
 - Scorer name and version in span metadata.
 
 ## Provenance
 
 - Everything downstream — scoring, slicing, debugging, release gates — can only see what you
   log. If the trace contains only the final answer, evaluation can only judge the final
-  answer. Agents can "show their work," but only if you expose it. `[guide §3.2]`
+  answer. Agents can "show their work," but only if you expose it.
 - Instrument first: traces are the behavioral record, and everything else consumes them. A
-  thin trace caps every downstream measurement. `[guide §1]`
+  thin trace caps every downstream measurement.
 - You can only discover what you logged — undertraced systems hide their failure modes.
-  `[guide §4.8.3]`
 - Dataset-level metadata rubrics are treated in the AIMS resources.
-  `[guide §3.2 → Truong & Koyejo 2026]`
+  `[Truong & Koyejo 2026]`
 
 ## Field dictionary template
 
