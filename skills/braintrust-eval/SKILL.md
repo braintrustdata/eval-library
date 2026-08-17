@@ -41,17 +41,18 @@ is that the user signs off on the dataset and the scorers before a paid run.
 **1a. Ask which org.** Braintrust API keys are org-scoped, so this decides which
 credential the run uses — and it's a data-governance decision.
 
-> "Which org should this run in — **Personal** or **Braintrust**?"
+> "Which org should this run in?" — list the orgs the environment has keys for.
+> Skip the question entirely if there is only one.
 
 Governance default, state it if relevant: *if the eval involves sensitive,
-customer, or proprietary data, default to the Personal org unless the user says
-otherwise.*
+customer, or proprietary data, default to the most restricted org available unless
+the user says otherwise.*
 
 **1b. Select + verify the key.** Keys live in **one canonical file**, resolved as
 `$BRAINTRUST_ENV_FILE` → `~/.braintrust/.env` → the current project's `.env` (that
-last one only if neither of the others exists). Map the org to its key:
-- Personal → `BRAINTRUST_API_KEY_PERSONAL`
-- Braintrust → `BRAINTRUST_API_KEY_BRAINTRUST`
+last one only if neither of the others exists). Each org's key is
+`BRAINTRUST_API_KEY_<ORG>`; a single-org setup can use a plain
+`BRAINTRUST_API_KEY`.
 
 **Do not hunt for keys** across sub-project `.env` files — that trips credential-
 scanning guards. If the chosen key is missing or empty: create/append the stub
@@ -266,9 +267,8 @@ For intervals, pairing, subgroups, and fragility, hand off to **`braintrust-anal
 it continues the running log below.
 
 **Turning the log into a blog?** That's a separate step, and not everyone wants
-it — hand off to the **`eval-research-blog-post`** skill (it ships with the
-`braintrust` monorepo, not this library), which owns the research-blog structure,
-the jargon rule, and drafting through the voice skills.
+it — hand off to a dedicated writing skill that owns the research-blog structure, the
+jargon rule, and the voice pass. Not included in this library.
 
 **Agentic-eval analysis menu** (stats worth computing beyond score means —
 pick what the experiment makes interesting):
@@ -388,6 +388,6 @@ Authored inside this skill folder, loaded on demand:
   `claude -p` subprocess evals (trace-claude-code plugin recipe + failure catalog)
 - `references/bt-setup.md`, `references/bt-auth.md` — install + org-scoped keys
 
-**Sibling skill (in the `braintrust` monorepo, not this library):**
-`eval-research-blog-post` — turns the finished `ANALYSIS-SUMMARY.md` into a
-publishable blog post (research-blog structure, jargon rule, voice skills).
+**Downstream, not included here:** a writing skill that turns the finished
+`ANALYSIS-SUMMARY.md` into a publishable post (research-blog structure, jargon
+rule, voice pass).

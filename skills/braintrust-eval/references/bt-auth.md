@@ -1,7 +1,8 @@
 # Braintrust auth (org-scoped keys)
 
 Braintrust API keys are **scoped to one org**, so which key you use *is* which org
-the run lands in. This skill runs across two orgs, so `.env` holds two keys.
+the run lands in. Where you work across more than one org, `.env` holds one key per
+org, suffixed with the org's name.
 
 ## The canonical `.env`
 
@@ -16,12 +17,15 @@ those and never sweep them for keys** (credential-scanning guards will block it,
 and the org they belong to is unknown anyway).
 
 ```dotenv
-# ~/.braintrust/.env
-BRAINTRUST_API_KEY_PERSONAL=sk-...      # personal org
-BRAINTRUST_API_KEY_BRAINTRUST=sk-...    # Braintrust org
+# ~/.braintrust/.env — one key per org, suffixed with the org name
+BRAINTRUST_API_KEY_PERSONAL=sk-...      # e.g. a personal org
+BRAINTRUST_API_KEY_<ORG>=sk-...         # e.g. a team or company org
 # optional, self-hosted only:
 # BRAINTRUST_API_URL=https://api.braintrust.dev
 ```
+
+A single-org setup can use a plain `BRAINTRUST_API_KEY` and skip the org question
+in Phase 1 entirely.
 
 If the file or the needed variable is missing: create/append the stub line, ask
 the user to fill it in the file (never in chat), then verify with the org-list
@@ -38,12 +42,10 @@ curl -s "https://api.braintrust.dev/v1/project?limit=100" \
   -H "Authorization: Bearer $KEY"   # -> objects[].name; empty/401 means bad key
 ```
 
-Phase 1 asks which org, then selects the matching key:
-- **Personal** → `BRAINTRUST_API_KEY_PERSONAL`
-- **Braintrust** → `BRAINTRUST_API_KEY_BRAINTRUST`
+Phase 1 asks which org, then selects the matching `BRAINTRUST_API_KEY_<ORG>`.
 
-**Governance default:** if the eval touches sensitive / customer / proprietary
-data, default to the Personal org unless the user says otherwise.
+**Governance default:** if the eval touches sensitive, customer, or proprietary
+data, default to the most restricted org available unless the user says otherwise.
 
 ## Rules
 

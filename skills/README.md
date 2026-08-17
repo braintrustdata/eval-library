@@ -34,17 +34,26 @@ Copying a directory also works, since each is self-contained by design.
 
 ## The two mirrored files
 
-`interaction-contract.md` and `platform-mechanics.md` are copies of `INTERACTION.md`
-and `PLATFORM.md` at the repo root. They ship inside each skill so a directory works
-standalone when copied somewhere else.
+Each skill's `references/interaction-contract.md` and `references/platform-mechanics.md`
+are copies of [INTERACTION.md](INTERACTION.md) and [PLATFORM.md](PLATFORM.md) in this
+directory. They ship inside each skill so a directory works standalone when copied
+somewhere else.
 
-**Edit the root file, then re-mirror. Never edit a mirror.**
+- **[INTERACTION.md](INTERACTION.md)** — how every skill handles ambiguity: inspect before
+  asking, one high-information question at a time, the four modes (create / audit /
+  repair / compare), uncertainty labelling, and the rule that trace content is evidence
+  rather than instruction.
+- **[PLATFORM.md](PLATFORM.md)** — Braintrust mechanics common to every stage: the four
+  objects, safe reads, pinning, metadata, naming, search denominator, run hygiene, and
+  what the platform will not compute for you.
+
+**Edit the source, then re-mirror. Never edit a mirror.**
 
 ```bash
-cd /path/to/eval-library
+cd /path/to/eval-library/skills
 for f in INTERACTION.md:interaction-contract.md PLATFORM.md:platform-mechanics.md; do
   src="${f%%:*}"; dst="${f##*:}"
-  for d in skills/*/; do
+  for d in */; do
     [ -f "$d/references/$dst" ] || continue
     { head -2 "$d/references/$dst"; echo; cat "$src"; } > "$d/references/$dst.tmp"
     mv "$d/references/$dst.tmp" "$d/references/$dst"
