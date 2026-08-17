@@ -1,8 +1,7 @@
 # skills/
 
-The skills themselves. For what each one does and when to reach for it, see the
-annotated catalog and routing tables in the [root README](../README.md) — this file
-covers only the mechanics of the directory.
+Directory mechanics. What each skill does and when to reach for it is in the
+[root README](../README.md).
 
 ## Layout
 
@@ -18,19 +17,6 @@ skills/braintrust-<name>/
 Every directory is `braintrust-`-prefixed, and the frontmatter `name:` **must** match
 the directory name exactly — agents resolve one against the other, and a mismatch
 makes the skill unloadable.
-
-## Installing
-
-Symlink the ones you want into `~/.claude/skills/` (or `.claude/skills/` in a repo):
-
-```bash
-for d in /path/to/eval-library/skills/*/; do
-  ln -sfn "${d%/}" ~/.claude/skills/"$(basename "$d")"
-done
-```
-
-Symlinks beat copies — edits land immediately and there is one source of truth.
-Copying a directory also works, since each is self-contained by design.
 
 ## The two mirrored files
 

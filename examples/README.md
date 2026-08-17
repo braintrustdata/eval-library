@@ -1,11 +1,7 @@
 # examples/
 
-Runnable evals built with the skills in [../skills/](../skills/). Each is a complete
-project — dataset, task, scorers, and a harness you can actually execute — not a snippet.
-
-They exist for two reasons: to show what the methodology looks like when it lands in
-code, and to give the skills something concrete to point at. Several reference files
-under `skills/braintrust-eval/references/` cite these directly.
+Runnable evals built with the skills in [../skills/](../skills/) — dataset, task,
+scorers, and a harness you can execute, not snippets.
 
 ## What's here
 
@@ -15,13 +11,11 @@ under `skills/braintrust-eval/references/` cite these directly.
 
 ## Running one
 
-Each example carries its own README with setup and commands. In general you will need a
-Braintrust API key (`BRAINTRUST_API_KEY`) and a Python environment — see the example's
-own instructions, since dependencies differ.
+Each example carries its own README with setup and commands. You will need a Braintrust
+API key (`BRAINTRUST_API_KEY`) and a Python environment; dependencies differ per example.
 
-Examples cost money to run. They call models, sometimes many times per row. Read the
-example's README for scale before launching a full pass, and prefer the smoke path first
-where one is offered.
+**These cost money to run** — they call models, sometimes many times per row. Check the
+example's README for scale first, and use the smoke path where one is offered.
 
 ## Adding an example
 

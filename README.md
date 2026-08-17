@@ -12,8 +12,6 @@ narrow enough to invoke on its own, each naming the skill that consumes its outp
 
 ## Install
 
-Skills are plain directories. Symlink the ones you want:
-
 ```bash
 git clone https://github.com/braintrustdata/eval-library.git
 
@@ -30,8 +28,7 @@ for d in eval-library/skills/braintrust-*/; do
 done
 ```
 
-Symlinks beat copies — edits land immediately and there is one source of truth. Copying
-works too, since each skill directory is self-contained.
+Each skill directory is self-contained, so copying works too.
 
 ## Start here
 
@@ -47,26 +44,19 @@ scored, compared experiment, with approval gates before anything costs money.
 
 ## Compatibility
 
-Skills follow the [Agent Skills open standard](https://agentskills.io) — a `SKILL.md`
-with YAML frontmatter plus optional `references/`, `scripts/`, and `assets/`. All 24
-conform: names are lowercase-hyphen and match their directories, descriptions are within
-the 1,024-character cap.
+Skills follow the [Agent Skills open standard](https://agentskills.io), so they work in
+Claude Code, Codex CLI, and other tools that adopted it.
 
-That means they work in Claude Code, Codex CLI, and the other tools that adopted the
-standard. Agent-specific frontmatter fields are ignored rather than erroring, so nothing
-needs forking per tool.
-
-The skills assume Braintrust as the platform — datasets, experiments, scorers, online
-scoring. The *methodology* in each card is platform-independent; the `Braintrust`
-section at the end of each is where the platform-specific mechanics live.
+They assume Braintrust as the platform. The methodology in each card is
+platform-independent; the `Braintrust` section at the end is where the platform-specific
+mechanics live.
 
 ---
 
 ## The skills
 
-Every skill lives under [skills/](skills/), prefixed `braintrust-` so the set groups
-together alongside skills from other sources. Directory mechanics and the contributor
-workflow are in [skills/README.md](skills/README.md).
+All under [skills/](skills/). Directory mechanics and the contributor workflow are in
+[skills/README.md](skills/README.md).
 
 ### Workflow
 
