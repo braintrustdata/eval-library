@@ -1,45 +1,71 @@
-# GLM-5.2 long-context retrieval eval
+# GLM-5.2 long-context retrieval
 
-Can GLM-5.2 retrieve exact facts from a large code context, and what happens to latency when the same prefix is sent repeatedly?
+Do open-source models fall apart once the context gets long?
 
-This is the runnable core of the Braintrust × Baseten benchmark behind [*Benchmarking GLM-5.2 vs Opus 4.8 for real-world long-context retrieval*](https://www.braintrust.dev/blog/glm-52-vs-opus-48-long-context-retrieval). It builds deterministic questions from the CPython AST, gives the model a 25K- or 50K-token source bundle, and scores the answer against mechanically derived ground truth.
+We gave GLM-5.2 exact questions over 25K and 50K tokens of CPython source. The questions and answer keys are generated mechanically from the Python AST, so the primary score is code-graded rather than judged by preference. Every prompt is called three times to measure cold and warm latency, and a perturbation control changes symbols inside the supplied code to check whether the model is reading the context instead of repeating memorized facts.
 
-It is intentionally a focused retrieval eval, not a general coding benchmark.
+This is the runnable GLM-5.2 portion of Braintrust's [long-context comparison with Opus 4.8 and Sonnet 5](https://www.braintrust.dev/blog/glm-52-vs-opus-48-long-context-retrieval). It is a focused retrieval study, not a general coding leaderboard.
 
-## What it measures
+## Result
 
-The dataset includes six question families:
+GLM-5.2's exact retrieval score stayed effectively flat as the context doubled: 83.3% at 25K tokens and 84.5% at 50K. In this run, mean provider cost per trace rose from $0.0208 to $0.0415.
+
+| Context | AST semantic match | Substring match | Factuality judge | Mean cost/trace |
+| --- | ---: | ---: | ---: | ---: |
+| 25K tokens | 83.3% | 76.7% | 80.7% | $0.0208 |
+| 50K tokens | 84.5% | 76.5% | 81.7% | $0.0415 |
+
+The compact aggregate data is published in [`results/glm-5.2-results.json`](results/glm-5.2-results.json), including sample counts, three-run latency means, costs, and source artifact IDs.
+
+Costs are specific to the June 2026 benchmark run. Provider pricing, routing, caching, retries, and serving configuration can change them.
+
+## Study design
+
+### Dataset
+
+The builder sorts the CPython 3.13.5 `Lib/` tree, packs complete files into a 25K- or 50K-token context, and derives six kinds of questions:
 
 | Code | Question | Ground truth |
 | --- | --- | --- |
-| `RT` | Declared return type | `FunctionDef.returns` |
-| `CL` | File defining a class | `ClassDef` location |
-| `BC` | Class bases | `ClassDef.bases` |
-| `FC` | Module-level function count | Top-level AST nodes |
-| `DC` | Function decorators | `decorator_list` |
-| `DS` | First docstring line | `ast.get_docstring` |
+| `RT` | What return type is declared? | `FunctionDef.returns` |
+| `CL` | Which file defines this class? | `ClassDef` location |
+| `BC` | Which base classes does it inherit from? | `ClassDef.bases` |
+| `FC` | How many module-level functions are defined? | Top-level AST nodes |
+| `DC` | Which decorators are applied? | `decorator_list` |
+| `DS` | What is the first docstring line? | `ast.get_docstring` |
 
-Some rows rename a function only inside the supplied context. These perturbations check retrieval from the prompt instead of memorized source associations.
+Twenty of the 100 rows in each published tier are perturbation controls. The builder renames a function inside the supplied context and updates the question while leaving the underlying CPython checkout unchanged. A correct answer must follow the prompt-local source.
 
-Each task makes three sequential calls with the same prompt: one cold call and two warm calls. Only the cold answer is scored. Braintrust child spans record time to first token and total latency for each call.
+### Task and traces
 
-Scorers:
+Each row sends the same prompt three times in sequence:
 
-- `ASTSemanticMatch` is the primary deterministic score and applies question-type-specific rules.
-- `SubstringMatch` is a lenient retrieval diagnostic.
-- `FactualityJudge` is an optional audit judge, not the headline metric.
+1. Cold call—the returned answer is scored.
+2. Warm call 1—retained for latency and cache observation.
+3. Warm call 2—retained for latency and cache observation.
 
-## Pinned reproduction inputs
+Braintrust records each call as a child span with time to first token and total latency. The wrapped OpenAI-compatible client records the provider request and token usage.
+
+### Scoring
+
+- `ASTSemanticMatch` is the primary metric. It uses the semantics of each question family: exact numeric equality for counts, order-independent membership for bases and decorators, normalized paths for class locations, and equivalent syntax for return types.
+- `SubstringMatch` is a lenient recall diagnostic.
+- `FactualityJudge` is an optional Nemotron-based audit signal. It is not the headline metric.
+
+## Reproduce it
+
+### Pinned inputs
 
 - Model: `zai-org/GLM-5.2`, served through Baseten's OpenAI-compatible API.
 - Corpus: CPython tag `v3.13.5`, `Lib/` only.
 - Dataset version: `cpython-v3.13.5-seed-42`.
 - Tokenizer: `cl100k_base`.
 - Context tiers: 25,000 and 50,000 tokens.
+- Published shape: 100 rows per tier, 60/40 easy/hard split, 20 perturbations.
 
-The generated JSONL repeats the context on every row and is intentionally not checked in. Its manifest records the corpus SHA-256, seed, tier, and question counts.
+The generated JSONL repeats the context on every row and is not checked in. Its manifest records the corpus SHA-256, seed, tier, and question counts. The builder rejects a CPython checkout that does not match the pinned version.
 
-## Setup
+### Setup
 
 You need Python 3.11+ and [`uv`](https://docs.astral.sh/uv/).
 
@@ -56,57 +82,56 @@ BRAINTRUST_API_KEY=...  # experiment logging
 BASETEN_API_KEY=...     # GLM-5.2 and the optional judge
 ```
 
-## Build the dataset
+### Build the dataset
+
+Start with 10 rows so you can inspect the generated records before paying for a full run:
 
 ```bash
-# Fast local smoke dataset
 uv run python build_dataset.py \
   --lib-path .cache/cpython-3.13.5/Lib \
   --tier T25 --rows 10 --perturbations 2
+```
 
-# Published shape: 100 rows per tier, 60/40 easy/hard, 20 perturbations
+Build the published 100-row tiers:
+
+```bash
 uv run python build_dataset.py \
   --lib-path .cache/cpython-3.13.5/Lib \
   --tier T25 --rows 100 --perturbations 20
+
 uv run python build_dataset.py \
   --lib-path .cache/cpython-3.13.5/Lib \
   --tier T50 --rows 100 --perturbations 20
 ```
 
-## Run
+### Run the eval
 
-These commands call paid APIs. The first command validates wiring without making any API calls.
+These commands call paid APIs except where noted.
 
 ```bash
+# Validate the dataset and harness without calling a model
 uv run python run_eval.py --dry-run --limit 1
 
-# Cheapest live smoke test: one row, one model call, deterministic scorers only
+# Cheapest live smoke test: one row, one call, deterministic scorers
 uv run python run_eval.py --limit 1 --repetitions 1
 
-# Full T25 latency run: 100 rows × 3 calls
+# Full T25 latency run: 100 rows × 3 sequential calls
 uv run python run_eval.py --dataset datasets/cpython-stdlib-T25.jsonl
 
-# Add the Nemotron audit judge used in the benchmark
-uv run python run_eval.py --dataset datasets/cpython-stdlib-T25.jsonl --judge
+# Add the audit judge used in the published study
+uv run python run_eval.py \
+  --dataset datasets/cpython-stdlib-T25.jsonl \
+  --judge
 ```
 
-Results log to the Braintrust project `GLM-5.2 Long-Context Retrieval`. Use `--update` to update an experiment with the same name. Use `--trial-count` for repeated independent trials; `--repetitions` controls the sequential cold/warm calls within each row.
+Results log to the Braintrust project `GLM-5.2 Long-Context Retrieval`. Use `--update` to update an experiment with the same name. `--trial-count` controls repeated independent trials; `--repetitions` controls cold and warm calls inside each row.
 
-## Published results
-
-The compact aggregate data from the June 2026 benchmark is checked in at [`results/glm-5.2-results.json`](results/glm-5.2-results.json). It contains scores, sample counts, cold/warm latency means, run-specific costs, and the source artifact IDs for both context tiers.
-
-| Tier | AST semantic match | Substring match | Factuality judge | Mean cost/trace |
-| --- | ---: | ---: | ---: | ---: |
-| T25 | 83.3% | 76.7% | 80.7% | $0.0208 |
-| T50 | 84.5% | 76.5% | 81.7% | $0.0415 |
-
-The full instance-level exports are not duplicated here because every row embeds the 25K- or 50K-token context, inflating the two GLM JSONL files to roughly 72 MB. The aggregate file preserves the resulting metrics and provenance without committing repeated source text.
-
-## Files
+## What is in this directory
 
 - `build_dataset.py` — deterministic corpus packing, AST question generation, sampling, and perturbations.
 - `run_eval.py` — GLM-5.2 task, streaming latency instrumentation, and Braintrust harness.
 - `scorers.py` — AST-aware primary scorer, substring diagnostic, and optional LLM judge.
 - `test_scorers.py` — unit checks for the scorer's important semantic cases.
 - `results/glm-5.2-results.json` — published aggregate results and provenance.
+
+The full instance-level exports are not duplicated here because every row embeds the 25K- or 50K-token context, making the two GLM JSONL files roughly 72 MB. The aggregate file preserves the result and provenance without committing the same source text hundreds of times.
