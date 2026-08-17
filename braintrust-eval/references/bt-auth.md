@@ -5,14 +5,19 @@ the run lands in. This skill runs across two orgs, so `.env` holds two keys.
 
 ## The canonical `.env`
 
-One file, fixed location: `/Users/jess/Documents/Coding Projects/Braintrust/.env`.
+One file, resolved in this order:
+
+1. `$BRAINTRUST_ENV_FILE`, if set.
+2. `~/.braintrust/.env`.
+3. The current project's `.env`, only if neither of the above exists.
+
 Sub-projects have their own `.env`s with a generic `BRAINTRUST_API_KEY` — **ignore
 those and never sweep them for keys** (credential-scanning guards will block it,
 and the org they belong to is unknown anyway).
 
 ```dotenv
-# /Users/jess/Documents/Coding Projects/Braintrust/.env
-BRAINTRUST_API_KEY_PERSONAL=sk-...      # personal org (Jess Wang)
+# ~/.braintrust/.env
+BRAINTRUST_API_KEY_PERSONAL=sk-...      # personal org
 BRAINTRUST_API_KEY_BRAINTRUST=sk-...    # Braintrust org
 # optional, self-hosted only:
 # BRAINTRUST_API_URL=https://api.braintrust.dev

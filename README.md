@@ -10,7 +10,6 @@ Interactive, end-to-end. These orchestrate a whole job and may hand off to the a
 
 - **[braintrust-eval](braintrust-eval/)** — Run an independent, end-to-end eval in Braintrust: from a plain-English idea to a scored, compared experiment (dataset sourcing, scorer design, hygienic experiment runs).
 - **[bt-analyze-eval-results](bt-analyze-eval-results/)** — Turn eval results into a defensible ship / no-ship decision: confidence intervals, run-to-run variance, subgroup breakdowns, paired comparisons, and a stats-grounded release gate.
-- **[braintrust-graph-styles](braintrust-graph-styles/)** — Apply Braintrust brand colors, typography, and styling to matplotlib/seaborn graphs when generating, restyling, or auditing data visualizations.
 
 ## Eval lifecycle skills
 
@@ -94,7 +93,6 @@ Instrument choice, when the request is "label our traffic somehow":
 - **Card format.** Lifecycle skills use a five-field card — `Trigger` / `Do` / `Avoid` / `Check` / `Risk` — plus a `Braintrust` section carrying the platform mechanics for that stage. It is compact procedural memory, retrieved on demand.
 - **Numbers live in `references/`.** Cards carry the procedure; thresholds carry their hedge and provenance in the reference file. A number that *is* the method (rule of three, K ≥ 3 runs, ≥ 2 raters) stays in the card; tunable defaults (κ floors, item counts, gate thresholds) do not.
 - **Provenance tags.** Empirical claims in `references/` carry `[guide §N]`, `[guide §N → source]` where the guide is paraphrasing, or `[pending]` where a claim is not yet in published prose and should be re-checked before external use. Platform mechanics — tool names, argument shapes, product defaults — carry `[platform]`. They are not empirical claims and have no guide section, but they go stale the same way, so re-check them against the shipped tool surface before relying on one externally.
-Each skill is a directory containing a `SKILL.md` (and any supporting `references/` or `scripts/`). Drop a skill directory into `~/.claude/skills/` to use it.
 
 ## Examples
 

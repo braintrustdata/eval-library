@@ -39,9 +39,9 @@ Governance default, state it if relevant: *if the eval involves sensitive,
 customer, or proprietary data, default to the Personal org unless the user says
 otherwise.*
 
-**1b. Select + verify the key.** Keys live in **one canonical file**:
-`/Users/jess/Documents/Coding Projects/Braintrust/.env` (fall back to the current
-project's `.env` only if the canonical file doesn't exist). Map the org to its key:
+**1b. Select + verify the key.** Keys live in **one canonical file**, resolved as
+`$BRAINTRUST_ENV_FILE` → `~/.braintrust/.env` → the current project's `.env` (that
+last one only if neither of the others exists). Map the org to its key:
 - Personal → `BRAINTRUST_API_KEY_PERSONAL`
 - Braintrust → `BRAINTRUST_API_KEY_BRAINTRUST`
 
@@ -257,8 +257,9 @@ For plots and heavier slicing, hand off to analysis (BTQL, cached pulls, Braintr
 charts) — it continues the running log below.
 
 **Turning the log into a blog?** That's a separate step, and not everyone wants
-it — hand off to the **`braintrust-eval-blog`** skill, which owns the
-research-blog structure, the jargon rule, and drafting through the voice skills.
+it — hand off to the **`eval-research-blog-post`** skill (it ships with the
+`braintrust` monorepo, not this library), which owns the research-blog structure,
+the jargon rule, and drafting through the voice skills.
 
 **Agentic-eval analysis menu** (stats worth computing beyond score means —
 pick what the experiment makes interesting):
@@ -348,8 +349,7 @@ raw dumps. Deeper analysis continues this same file.
      applies even with a clean process env). Remove it everywhere.
   2. **Parent-session env leakage**: a harness running inside Claude Code exports
      `ANTHROPIC_BASE_URL` + `CLAUDE_CODE_*` OAuth vars that break a child `claude`.
-     Always scrub these from the subprocess env (see `SCRUB_ENV` in
-     `paper-vs-figma-mcp-eval/run_eval.py`).
+     Always strip those two patterns from the subprocess env before spawning.
   3. **Stale CLI OAuth token**: the desktop app rotates refresh tokens, orphaning
      the CLI's keychain copy. Only the user can fix this — have them run
      `claude /login` in a fresh terminal. A smoke run costing $0.00 with 0 tokens
@@ -380,5 +380,6 @@ Authored inside this skill folder, loaded on demand:
   `claude -p` subprocess evals (trace-claude-code plugin recipe + failure catalog)
 - `references/bt-setup.md`, `references/bt-auth.md` — install + org-scoped keys
 
-**Sibling skill:** `braintrust-eval-blog` — turns the finished `ANALYSIS-SUMMARY.md`
-into a publishable blog post (research-blog structure, jargon rule, voice skills).
+**Sibling skill (in the `braintrust` monorepo, not this library):**
+`eval-research-blog-post` — turns the finished `ANALYSIS-SUMMARY.md` into a
+publishable blog post (research-blog structure, jargon rule, voice skills).

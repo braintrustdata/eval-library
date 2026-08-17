@@ -2,7 +2,7 @@
 
 Used in Phase 3 when an existing dataset probably already covers what the user
 wants to eval. Goal: surface 2–3 real candidates with enough detail to pick one,
-then hand the choice to `braintrust-dataset-import`.
+then hand the choice to `references/dataset-import.md`.
 
 ## 1. Search the Hub API
 
@@ -48,8 +48,8 @@ For each of 2–3 candidates give:
 - **gated/license** status (flag if it needs a token)
 - **rough mapping** — "`question` → input, `answer` → expected"
 
-Recommend one, note the tradeoff, and **wait for the user to pick.** Then hand the
-chosen `{repo, config, split, column mapping}` to **`braintrust-dataset-import`**.
+Recommend one, note the tradeoff, and **wait for the user to pick.** Then carry the
+chosen `{repo, config, split, column mapping}` into **`references/dataset-import.md`**.
 
 ## Provenance — why is this dataset reputable?
 

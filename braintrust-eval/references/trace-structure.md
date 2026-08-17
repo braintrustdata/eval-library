@@ -34,7 +34,7 @@ Do / don't:
 - **Live** — you're running the pipeline *now* (e.g. inside `Eval()`); wrap each
   stage so spans stream as it executes. This is what `braintrust-eval` uses.
 - **Offline / imported** — the runs already happened elsewhere (a HF dump, exported
-  logs); rebuild the tree and push it. That's `braintrust-dataset-import`.
+  logs); rebuild the tree and push it. See `references/dataset-import.md`.
 
 Both modes work in every language the SDK supports.
 
@@ -91,9 +91,9 @@ child_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, f"child:{session_id}:{i}"))
 Each span carries `id`/`span_id`/`root_span_id`/`span_parents`, `is_root`,
 `input`/`output`, `metadata`, `metrics`, and `span_attributes: {name, type,
 exec_counter}` — root `type:"task"`, children `type:"llm"`. Write to JSONL and
-`bt sync push`. The pattern is identical in any language; the battle-tested Python
-builder is `braintrust_logs.py` in the `hf_bt_cookbook` — reuse it via the
-`braintrust-dataset-import` skill rather than hand-rolling.
+`bt sync push`. The pattern is identical in any language. Build the span tree with a
+single helper rather than hand-rolling ids at each call site; the contract in
+`references/dataset-import.md` covers the rest of the import path.
 
 ---
 

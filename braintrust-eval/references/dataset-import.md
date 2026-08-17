@@ -3,14 +3,13 @@
 The dataset-landing step: take the source chosen in Phase 3 (a HuggingFace dataset,
 CSV/JSON/JSONL, or existing agent traces) and put it into Braintrust in the right
 shape. **Write the import script fresh in the eval's project folder** following the
-contract below — there is no shared cookbook to import from. A validated worked
-example lives at `paper-vs-figma-mcp-eval/import_design2code.py` (image-attachment
-inputs, viewer-API pull, preview/--push, uuid5 upsert ids).
+contract below — there is no shared cookbook to import from. For a HuggingFace pull,
+`rag-only-enforcement/generate_swebench_dataset.py` is a minimal in-repo example.
 
 **Environment:** create a per-eval venv (`python3 -m venv .venv && .venv/bin/pip
 install braintrust`) and run scripts with `.venv/bin/python`. Do NOT trust a bare
-`import braintrust` check from the workspace root — the `braintrust/` repo clone
-there shadows the SDK as a namespace package and false-positives.
+`import braintrust` check from a workspace root that also holds a `braintrust/`
+repo clone — the clone shadows the SDK as a namespace package and false-positives.
 
 ## Which target? run → Dataset, analyze → Logs
 
@@ -47,5 +46,5 @@ similarity scorer, because a recorded answer is a **reference, not ground truth*
 - Malformed message JSON kept as raw text so the row survives.
 
 > Kept as a reference under `braintrust-eval` for now. If "import data into Braintrust"
-> becomes a task you do on its own, promote this + `dataset-mapping.md` back into a
-> standalone `braintrust-dataset-import` skill.
+> becomes a task you do on its own, promote this + `dataset-mapping.md` into a
+> standalone skill.

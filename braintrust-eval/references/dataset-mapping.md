@@ -1,7 +1,7 @@
 # Dataset mapping (source → `{input, expected, metadata}`)
 
 The Dataset path of the import. The whole job is the `to_record` function — everything
-else (pull, preview, push) is boilerplate around it. From `hf_bt_cookbook/import_dataset.py`.
+else (pull, preview, push) is boilerplate around it.
 
 ## The EDIT ME block + the mapping
 
