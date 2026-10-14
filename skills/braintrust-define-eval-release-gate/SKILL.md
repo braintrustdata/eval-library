@@ -23,7 +23,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 1. Identify the shipping claim and the failures that cannot be traded away. Draft the table before
    pinning thresholds needing product-owner input — mark those `Needs decision`.
-2. Build a row per property the claim implicitly makes, using the row set in `reference.md`:
+2. Build a row per property the claim implicitly makes, using the row set in `references/gate-rows.md`:
    magnitude, significance, consistency, stability, reliability, safety, latency/cost. A gate
    should test **every** property, not just the average.
 3. Keep improvement metrics and guardrails structurally separate: guardrails are constraints,

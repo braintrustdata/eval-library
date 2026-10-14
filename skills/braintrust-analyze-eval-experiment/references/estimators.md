@@ -35,9 +35,11 @@ Two corollaries:
 ## Estimators
 
 **CI on a pass rate.** 150/200 → p = 0.75, SE = √(0.75 × 0.25 / 200) ≈ 3.1 pp, 95% CI ≈
-[69%, 81%]. Any score inside that range is not distinguishable from yours on this eval; a
-competitor's 78% on the same 200 tasks is consistent with no difference. Use **Wilson**
-near 0 or 1 or when n is small.
+[69%, 81%]. This interval estimates one system's pass rate; it does not test the
+difference between systems. For systems evaluated on the same tasks, use an interval
+or test on paired differences. If one passes 150/200 and another passes those same
+150 plus six more, the two-sided exact McNemar test gives p = 0.03125 despite both
+rates falling inside this interval. Use **Wilson** near 0 or 1 or when n is small.
 
 **Rates near zero.** 0 violations in 200 trials does **not** mean 0%. Rule of three: 95%
 upper bound ≈ 3/n = 1.5%. A 0.1% tolerance needs ~3,000 clean trials.

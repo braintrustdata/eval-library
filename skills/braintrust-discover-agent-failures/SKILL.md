@@ -30,7 +30,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
    label problem? Only genuine failures enter the taxonomy.
 4. Attribute each mode to its **root cause, not its visible symptom.** Early mistakes cascade, so
    organize by the module that first erred — memory, reflection, planning, action.
-5. Hunt **silent** failures specifically (`reference.md`). Most agent failures raise no error at
+5. Hunt **silent** failures specifically (`references/failure-taxonomy.md`). Most agent failures raise no error at
    all: plausible-looking but unusable output, missing answers, wrong entities.
 6. Freeze each confirmed mode by isolating the decision point where it occurs and snapshotting it,
    so a flaky trajectory failure becomes a stable regression test.

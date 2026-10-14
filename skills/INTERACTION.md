@@ -54,7 +54,7 @@ through the whole lifecycle.
 
 ## 7. Constants policy
 
-Numeric thresholds live in each skill's `reference.md`, not in the card. The card
+Numeric thresholds live in each skill's method-specific files under `references/`, not in the card. The card
 carries the procedure; the reference carries the calibration, its hedge, and its
 provenance.
 

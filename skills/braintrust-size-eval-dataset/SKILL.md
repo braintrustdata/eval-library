@@ -25,7 +25,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
    rate**, or **bound a rare failure**.
 2. Take the minimum meaningful effect from the release gate's magnitude criterion, not from what
    the data shows. Ask only if genuinely absent.
-3. Compute N with the method and anchors in `reference.md`, applying the **design effect** for
+3. Compute N with the method and anchors in `references/power-analysis.md`, applying the **design effect** for
    clustered items — related variants are fewer items than they look.
 4. Multiply through the whole matrix: items × arms × runs (K ≥ 3 for gating), and check the
    product against every quota and credit balance in the path before anyone starts.

@@ -21,7 +21,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 ## Do
 
-1. Enumerate what actually differs between arms with the inventory in `reference.md`, including
+1. Enumerate what actually differs between arms with the inventory in `references/isolation-designs.md`, including
    the variables hiding inside apparently atomic ones: the serving path behind a model string, the
    tool manifest behind "the agent."
 2. State honestly what the existing data can and cannot separate. Two arms differing in three ways

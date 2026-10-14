@@ -24,7 +24,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 1. Convert the change into **one tradeoff-aware hypothesis**: directional, minimum effect,
    naming what may not regress, plus population, proxies, and scorers. This **is** the release
    gate stated in advance.
-2. Name independent, dependent, and control variables (`reference.md`). Any control that matters
+2. Name independent, dependent, and control variables (`references/experiment-manifest.md`). Any control that matters
    must be a schema field, or it cannot be held constant or sliced by.
 3. Pin what hides inside apparently atomic variables: the **serving path** behind a model
    string, the **tool manifest** behind "the agent." If more than one thing changes per arm, the

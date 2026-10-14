@@ -25,7 +25,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
    "82.4% [79.1, 85.7], n=520, K=3" is.
 2. Report the **effective** n — attempted, completed, errored per arm, plus how errors were
    treated. "n=520" on a run where 80 items never completed is a misreport.
-3. Run the full presentation checklist in `reference.md`. It is the deliverable's definition of
+3. Run the full presentation checklist in `references/presentation-checklist.md`. It is the deliverable's definition of
    done.
 4. **Disclose the search**: how many arms were tried before the reported winner, and label every
    number exploratory or confirmatory.

@@ -25,7 +25,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 1. Inspect existing cases first and write the population sentence they appear to represent. Ask
    for the target population only if it cannot be inferred.
-2. Source in the priority order in `reference.md`: production traces → expert-authored →
+2. Source in the priority order in `references/dataset-construction.md`: production traces → expert-authored →
    synthetic to fill documented gaps → public benchmarks for cold start, harness calibration,
    anchoring, or gap mapping only.
 3. Stratify rather than vibe: list strata from the instrumentation's metadata fields, measure
@@ -37,9 +37,9 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 5. For open-ended tasks encode `expected` as **constraints or a rubric, not a string**, and ship
    the constraint set with the item.
 6. Set the lifecycle: headroom at both ends, dev/test separation with **counted test touches**,
-   the leakage controls in `reference.md`, refresh against current production mix, and the
+   the leakage controls in `references/dataset-construction.md`, refresh against current production mix, and the
    datasheet.
-7. State the **iteration budget before iterating** (`reference.md`) — how many experiments before
+7. State the **iteration budget before iterating** (`references/dataset-construction.md`) — how many experiments before
    stopping to reflect, one coherent change each, the same dev slice throughout, and the winner
    running once against test. A budget set afterwards is a description of what you did, not a
    control on it.

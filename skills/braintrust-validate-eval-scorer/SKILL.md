@@ -22,12 +22,12 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 ## Do
 
 1. Name the **reference tier** before computing anything. Adjudicated human labels are the only
-   tier the fitness bands in `reference.md` are calibrated against. A strong-model reference is a
+   tier the fitness bands in `references/validation-recipe.md` are calibrated against. A strong-model reference is a
    cheaper tier that supports iteration and nothing else — say which one you have, in the verdict.
 2. Verify alignment: scorer outputs and reference labels must line up at the item **and
    criterion** level. Misalignment invalidates every number after it.
 3. Report **agreement (κ or α) with uncertainty**, not raw accuracy. Fitness bands and their
-   hedges are in `reference.md`.
+   hedges are in `references/validation-recipe.md`.
 4. Lead with the most decision-relevant **false acceptance** before any aggregate, and enumerate
    the dangerous cells case by case.
 5. Break errors down by class and **severity**. Confusing "excellent" with "good" may be fine;

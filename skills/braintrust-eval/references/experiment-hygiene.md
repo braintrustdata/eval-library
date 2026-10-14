@@ -3,8 +3,7 @@
 The API calls and row-level definitions behind a hygienic run. Loaded during
 Phase 5–6.
 
-General mechanics — naming convention, why names are join keys, deleting smoke and
-partial runs, the 1,000-row cursor — are in `references/platform-mechanics.md`
+General mechanics — naming convention, why names are join keys, classifying failed runs and cleaning up disposable runs, the 1,000-row cursor — are in `references/platform-mechanics.md`
 (§5, §7, §2). This file is the executable half: the exact requests, the row
 arithmetic, and the policy this skill applies on top.
 
@@ -30,13 +29,17 @@ curl -X DELETE "$BRAINTRUST_API_URL/v1/experiment/$EXPERIMENT_ID" \
   -H "Authorization: Bearer $KEY"
 ```
 
-Policy this skill applies, beyond the general rule that smoke and partial runs must
-not survive to be read as arms:
+Classify failures before retrying or deleting an experiment:
 
-- **Smoke runs** — delete as soon as one passes, not later. It is never a result.
-- **Partial / errored / killed mid-run** — delete automatically before re-running.
-- **Completed runs** — confirm with the user first. Braintrust experiments are
-  **unrecoverable** once deleted.
+- **Disposable smoke runs** can be deleted automatically after checking the pipeline.
+- **Confirmed harness or infrastructure failures** can be excluded from clean comparisons.
+  Disclose retries and apply the same retry policy across variants. Delete automatically
+  only when the experiment contains no valid completed results.
+- **Variant-caused failures** must be retained, including agent stalls, giving up, and
+  tool or API failures caused by the evaluated variant. They count toward the failure
+  rate and search denominator.
+- **Completed results**, including results in partially failed experiments, require
+  user confirmation before deletion. Braintrust experiments are **unrecoverable** once deleted.
 
 ## Survivor arithmetic
 

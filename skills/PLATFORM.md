@@ -64,8 +64,11 @@ is exploratory.**
 
 - `maxConcurrency` from an **environment variable**, so one fragile provider can be throttled
   alone instead of slowing or confounding the whole matrix.
-- **Delete** smoke tests and partially-errored experiments (`DELETE /v1/experiment/{id}`) so
-  they are never read as arms or counted in the denominator.
+- Classify failed runs before cleanup. Retain variant-caused failures and report them
+  in the survival rate and search denominator. Exclude confirmed harness or infrastructure
+  failures from clean comparisons using status or filters, and disclose retries. Automatic
+  deletion (`DELETE /v1/experiment/{id}`) is limited to disposable smoke runs and confirmed
+  runner failures with no valid completed results. Ask before deleting completed results.
 - K runs means K **recorded** trials, kept per-run. A stored mean cannot be un-averaged.
 
 ## 8. What is not native

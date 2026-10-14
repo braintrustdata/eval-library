@@ -38,7 +38,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 5. Build ground truth with the **strong model**, then evaluate the **cheap facet model** against
    it. Deterministic scorers for output validity and no-match correctness; a semantic-agreement
    scorer for the rest.
-6. Iterate under a budget stated in advance (`reference.md`): one hypothesis, one coherent change
+6. Iterate under a budget stated in advance (`references/facet-pipeline.md`): one hypothesis, one coherent change
    to preprocessor *or* prompt, rerun the same validation slice. Run the winner **once** on the
    untouched split.
 7. Estimate the backfill cost and get explicit approval before rewinding.
@@ -88,7 +88,7 @@ attaching. If you write one and the project default is still `thread`, set it as
 so existing and new facets inherit it.
 
 **Evaluating the facet.** Dataset rows carry **references, never materialized text** (`trace_ref`,
-`group_ref`, `_full_row_id_ref` — shapes in `reference.md`). Ground-truth run: `run_eval` with the
+`group_ref`, `_full_row_id_ref` — shapes in `references/facet-pipeline.md`). Ground-truth run: `run_eval` with the
 facet as task, `expected` unset, **no scorers**; spot-check the outputs. Subsequent runs pass
 `{"experiment_name": "<reference-experiment>"}` as the dataset so those outputs become `expected`.
 Inline facet tasks wrap the definition in `inline_function` — not `inline_prompt`, not fields
@@ -102,6 +102,6 @@ and grouping, filter, preprocessor, sampling, topic window, **and** generation c
 compatible — matching scope and filter alone is not sufficient. Sharing an automation batches facet
 calls, which is the reason to bother. Pass `automation_id` explicitly whenever more than one exists.
 
-Rewind sizing and the cost formula are in `reference.md`. Present eligible count, window, token
+Rewind sizing and the cost formula are in `references/facet-pipeline.md`. Present eligible count, window, token
 assumptions, base estimate, and uncertainty buffer, and get approval on the window *and* the
 estimate — permissions checks on the mutating tool are not a substitute for approving a spend.

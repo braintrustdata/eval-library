@@ -24,7 +24,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 1. Name the recurring behavior and why mistakes matter. If traces exist, infer the spec from
    them before asking anything.
-2. Write the seven sections in `reference.md`: intent, applicability, evidence, decision,
+2. Write the seven sections in `references/behavior-spec-template.md`: intent, applicability, evidence, decision,
    execution, recovery, failure modes.
 3. Write every clause so a reviewer could mark it satisfied or violated **from a trace alone**.
    Replace "handles uncertainty well" with "states the ambiguity and asks before writing files."

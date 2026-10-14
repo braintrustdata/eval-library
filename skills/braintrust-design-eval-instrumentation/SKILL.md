@@ -23,7 +23,7 @@ Contract: `references/interaction-contract.md`. Calibration, templates, provenan
 
 1. Work backward from each required decision to the fields needed to reconstruct it. Rule: **if
    a variable matters to interpretation or a release decision, it needs a field.**
-2. Design the record shape and the span tree **together** (`reference.md`) — one span per LLM
+2. Design the record shape and the span tree **together** (`references/trace-schema.md`) — one span per LLM
    call, tool call, and scorer call, nested to mirror actual control flow.
 3. Add the four fields always discovered too late: the **raw input artifact**, a **per-item
    status** kept separate from the score, the **fully resolved config** including serving path and

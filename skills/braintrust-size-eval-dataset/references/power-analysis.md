@@ -33,8 +33,11 @@ number.
 **CI on a pass rate.** 150/200 passes: p = 0.75.
 SE = √(p(1−p)/n) = √(0.75 × 0.25 / 200) ≈ 3.1 pp → 95% CI ≈ 75% ± 6 pp = [69%, 81%].
 
-Interpretation: any score inside [69%, 81%] is not distinguishable from yours on this
-eval; a competitor's 78% on the same 200 tasks is consistent with no difference.
+Interpretation: this interval estimates one system's pass rate. Comparing systems
+on the same tasks requires an interval or test on paired differences; a competitor's
+78% falling inside this interval does not establish that the systems are indistinguishable.
+For example, if it passes the same 150 tasks plus six more, the two-sided exact
+McNemar test gives p = 0.03125.
 
 Use **Wilson** instead of the normal approximation when p is near 0 or 1, or n is small.
 
